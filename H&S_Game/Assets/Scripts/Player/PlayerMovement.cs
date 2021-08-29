@@ -5,6 +5,10 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private GameObject inputManager;
+    [SerializeField] private float movementSpeed;
+    [SerializeField] private Rigidbody2D rb;
+    private Vector2 movementVector;
+    private float rawAxis;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,9 +25,12 @@ public class PlayerMovement : MonoBehaviour
     {
         /* GetAxisRaw returns only integer values 
            GetAxis returns real values that change depending on the lenght of the press*/
-        if (Input.GetAxisRaw("Horizontal") != 0)
+        rawAxis = Input.GetAxisRaw("Horizontal");
+        if (rawAxis != 0)
         {
-            Debug.Log(Input.GetAxisRaw("Horizontal"));
+            movementVector.x = rawAxis * movementSpeed * Time.deltaTime;
+            movementVector.y = 0;
+            rb.MovePosition(rb.position + movementVector);
         }
     }
 }
