@@ -26,8 +26,15 @@ public class PlayerMovement : MonoBehaviour
     {
         /* GetAxisRaw returns only integer values 
            GetAxis returns real values that change depending on the lenght of the press*/
-        //rawAxis = Input.GetAxisRaw("Horizontal");
-        rawAxis = inputManager.GetComponent<MobileInputManager>().horizontalMovement;
+        if (inputManager.GetComponent<MobileInputManager>() != null)
+        {
+            rawAxis = inputManager.GetComponent<MobileInputManager>().horizontalMovement;
+        }
+        else
+        {
+            rawAxis = Input.GetAxisRaw("Horizontal");
+        }
+
         if (rawAxis != 0)
         {
             movementVector.x = rawAxis * movementSpeed * Time.deltaTime;
