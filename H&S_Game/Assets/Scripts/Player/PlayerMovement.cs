@@ -16,11 +16,6 @@ public class PlayerMovement : MonoBehaviour
         m_FacingRight = false;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     private void FixedUpdate()
     {
@@ -35,7 +30,8 @@ public class PlayerMovement : MonoBehaviour
             rawAxis = Input.GetAxisRaw("Horizontal");
         }
 
-        if (rawAxis != 0)
+        // When left shift is hold down, player will stop moving.
+        if ((rawAxis != 0) && (!Input.GetKey(KeyCode.LeftShift)))
         {
             movementVector.x = rawAxis * movementSpeed * Time.deltaTime;
             movementVector.y = 0;
