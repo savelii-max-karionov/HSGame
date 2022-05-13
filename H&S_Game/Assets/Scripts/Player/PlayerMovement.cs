@@ -7,44 +7,70 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private GameObject inputManager;
     [SerializeField] private float movementSpeed;
     [SerializeField] private Rigidbody2D rb;
-    private Vector2 movementVector;
-    private float rawAxis;
+    [SerializeField] private static List<float> levels = new List<float> {-3.1f, -2.1f};
+    private Vector2 horizontalMovementVector;
+    private float horizontalRawAxis;
+    private float verticalRawAxis;
     private bool m_FacingRight;
+    public int curLevel=0;
+    
     // Start is called before the first frame update
     void Start()
     {
         m_FacingRight = false;
+
     }
 
 
     private void FixedUpdate()
     {
+        Vector2 horizontalMovementVector = new Vector2();
+        Vector2 verticalMovementVector = new Vector2();
+
         /* GetAxisRaw returns only integer values 
            GetAxis returns real values that change depending on the lenght of the press*/
         if (inputManager.GetComponent<MobileInputManager>() != null)
         {
-            rawAxis = inputManager.GetComponent<MobileInputManager>().horizontalMovement;
+            horizontalRawAxis = inputManager.GetComponent<MobileInputManager>().horizontalMovement;
         }
         else
         {
-            rawAxis = Input.GetAxisRaw("Horizontal");
+            horizontalRawAxis = Input.GetAxisRaw("Horizontal");
         }
 
         // When left shift is hold down, player will stop moving.
-        if ((rawAxis != 0) && (!Input.GetKey(KeyCode.LeftShift)))
+        if ((horizontalRawAxis != 0) && (!Input.GetKey(KeyCode.LeftShift)))
         {
-            movementVector.x = rawAxis * movementSpeed * Time.deltaTime;
-            movementVector.y = 0;
-            rb.MovePosition(rb.position + movementVector);
+            horizontalMovementVector.x = horizontalRawAxis * movementSpeed * Time.deltaTime;
+            horizontalMovementVector.y = 0;
+            rb.MovePosition(rb.position + horizontalMovementVector);
 
-            if (rawAxis > 0 && !m_FacingRight)
+            if (horizontalRawAxis > 0 && !m_FacingRight)
             {
                 Flip();
-            } else if (rawAxis < 0 && m_FacingRight)
+            } else if (horizontalRawAxis < 0 && m_FacingRight)
             {
                 Flip();
             }
         }
+
+
+        if (inputManager.GetComponent<MobileInputManager>() != null)
+        {
+            verticalRawAxis = inputManager.GetComponent<MobileInputManager>().verticalMovement;
+            if (verticalRawAxis > 0) verticalRawAxis = 1;
+            if (verticalRawAxis < 0) verticalRawAxis = -1;
+        }
+        else
+        {
+            verticalRawAxis = Input.GetAxisRaw("Vertical");
+        }
+
+        curLevel = (int)Mathf.Clamp(curLevel + verticalRawAxis, 0f, levels.Count - 1f);
+
+        verticalMovementVector.y = levels[curLevel]-rb.position.y;
+
+        rb.MovePosition(rb.position + horizontalMovementVector + verticalMovementVector);
     }
     private void Flip()
     {

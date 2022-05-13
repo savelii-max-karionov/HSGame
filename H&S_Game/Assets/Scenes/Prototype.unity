@@ -1342,7 +1342,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerTransform: {fileID: 1586606175}
-  heightOffset: 2.2
+  heightOffset: 0
   cameraMoveSpeed: 10
   cameraRestoreSpeed: 5
 --- !u!81 &1089501143
@@ -1503,6 +1503,7 @@ MonoBehaviour:
   inputManager: {fileID: 747955946}
   movementSpeed: 5
   rb: {fileID: 1586606179}
+  curLevel: 0
 --- !u!70 &1586606178
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

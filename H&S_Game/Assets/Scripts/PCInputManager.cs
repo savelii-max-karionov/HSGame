@@ -15,6 +15,7 @@ public class PCInputManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // This part can be improved. Input manager should not know any detail of HO.
         if (Input.GetMouseButtonDown(0))
         {
             mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition); //converting mouse position to world points

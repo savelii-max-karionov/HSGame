@@ -5,7 +5,7 @@ using UnityEngine;
 public class CameraFollow : MonoBehaviour
 {
     [SerializeField] private Transform playerTransform;
-    [SerializeField] private float heightOffset = 2.2f;
+    [SerializeField] private float heightOffset = 0f;
     [SerializeField] private float cameraMoveSpeed = 10f;
     [SerializeField] private float cameraRestoreSpeed = 5f;
     private Vector3 movementVector;
@@ -38,7 +38,7 @@ public class CameraFollow : MonoBehaviour
         else
         {
             movementVector.x = playerTransform.position.x;
-            movementVector.y = playerTransform.position.y + heightOffset;
+            movementVector.y = heightOffset;
             movementVector.z = -10;
             transform.position = movementVector;
         }
