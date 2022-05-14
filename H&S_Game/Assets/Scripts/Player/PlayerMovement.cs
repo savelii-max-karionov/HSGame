@@ -27,51 +27,67 @@ public class PlayerMovement : MonoBehaviour
         Vector2 horizontalMovementVector = new Vector2();
         Vector2 verticalMovementVector = new Vector2();
 
+        if (horizontalRawAxis > 0 && !m_FacingRight)
+        {
+            Flip();
+        }
+        else if (horizontalRawAxis < 0 && m_FacingRight)
+        {
+            Flip();
+        }
+
+        horizontalMovementVector = getHorizontalMoveVec(horizontalMovementVector);
+
+        verticalMovementVector = getVerticalMoveVec(verticalMovementVector);
+
+        rb.MovePosition(rb.position + horizontalMovementVector + verticalMovementVector);
+    }
+
+    private Vector2 getHorizontalMoveVec(Vector2 horizontalMovementVector)
+    {
         /* GetAxisRaw returns only integer values 
            GetAxis returns real values that change depending on the lenght of the press*/
         if (inputManager.GetComponent<MobileInputManager>() != null)
         {
             horizontalRawAxis = inputManager.GetComponent<MobileInputManager>().horizontalMovement;
         }
-        else
+        else if (inputManager.GetComponent<PCInputManager>() != null)
         {
-            horizontalRawAxis = Input.GetAxisRaw("Horizontal");
+            horizontalRawAxis = inputManager.GetComponent<PCInputManager>().horizontal;
         }
 
-        // When left shift is hold down, player will stop moving.
+        // When left shift is hold, player will stop moving.
         if ((horizontalRawAxis != 0) && (!Input.GetKey(KeyCode.LeftShift)))
         {
             horizontalMovementVector.x = horizontalRawAxis * movementSpeed * Time.deltaTime;
             horizontalMovementVector.y = 0;
-            rb.MovePosition(rb.position + horizontalMovementVector);
-
-            if (horizontalRawAxis > 0 && !m_FacingRight)
-            {
-                Flip();
-            } else if (horizontalRawAxis < 0 && m_FacingRight)
-            {
-                Flip();
-            }
+            //rb.MovePosition(rb.position + horizontalMovementVector);
         }
 
+        return horizontalMovementVector;
+    }
 
+    private Vector2 getVerticalMoveVec(Vector2 verticalMovementVector)
+    {
         if (inputManager.GetComponent<MobileInputManager>() != null)
         {
             verticalRawAxis = inputManager.GetComponent<MobileInputManager>().verticalMovement;
             if (verticalRawAxis > 0) verticalRawAxis = 1;
             if (verticalRawAxis < 0) verticalRawAxis = -1;
         }
-        else
+        else if (inputManager.GetComponent<PCInputManager>() != null)
         {
-            verticalRawAxis = Input.GetAxisRaw("Vertical");
+            verticalRawAxis = inputManager.GetComponent<PCInputManager>().vertical;
+            if (verticalRawAxis > 0) verticalRawAxis = 1;
+            if (verticalRawAxis < 0) verticalRawAxis = -1;
         }
 
         curLevel = (int)Mathf.Clamp(curLevel + verticalRawAxis, 0f, levels.Count - 1f);
 
-        verticalMovementVector.y = levels[curLevel]-rb.position.y;
-
-        rb.MovePosition(rb.position + horizontalMovementVector + verticalMovementVector);
+        verticalMovementVector.y = levels[curLevel] - rb.position.y;
+        return verticalMovementVector;
     }
+
     private void Flip()
     {
         // Switch the way the player is labelled as facing.

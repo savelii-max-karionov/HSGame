@@ -3,32 +3,49 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class HidingObject : MonoBehaviour
+public class HidingObject : InteractableObject
 {
     [SerializeField] private BoxCollider2D hideCollider;
     [SerializeField] private GameObject playerVisual;
     //[SerializeField] private Animator animator;
-    private bool open;
+    private float mouseHoldTime = 0f;
+    private const float holdThreshold = 2f;
+    private bool isHiden = false;
+    private bool hasChangedHidenState = false;
 
-    public delegate Action openHandler();
-    public event openHandler onOpen;
 
     // Start is called before the first frame update
     void Start()
     {
-        open = false;
     }
 
-    public void Open()
+    private new void OnMouseUp()
     {
-        onOpen?.Invoke();
-        open = !open;
-        Debug.Log(gameObject.name + ", open state: " + open);
-        //animator.SetBool("Open", open);
+        if (mouseHoldTime < holdThreshold)
+        {
+            base.OnMouseUp();
+        }       
+        hasChangedHidenState = false;
+        mouseHoldTime = 0f;
     }
-
-    // Update is called once per frame
-    void Update()
-    { 
+    private void OnMouseDrag()
+    {
+        mouseHoldTime += Time.deltaTime;
+        if(!hasChangedHidenState && isOpen && mouseHoldTime > holdThreshold)
+        {
+            if (!isHiden)
+            {
+                isHiden = true;
+                Debug.Log("hiding into " + gameObject.name);
+                hasChangedHidenState = true;
+            }
+            else
+            {
+                isHiden = false;
+                Debug.Log("comming out from " + gameObject.name);
+                hasChangedHidenState = true;
+            }
+        }
+        
     }
 }
