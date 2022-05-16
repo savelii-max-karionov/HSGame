@@ -670,7 +670,7 @@ namespace Photon.Pun.Demo.Cockpit
 
         public override void OnConnectedToMaster()
         {
-			if (debug)  Debug.Log("PunCockpit:OnConnectedToMaster()");
+			if (debug)  Debug.Log("PunCockpit:OnConnectedToMaster()"); 
 
 
             this.StateText.text = "Connected to Master" + (PhotonNetwork.OfflineMode ? " <Color=Red><b>Offline</b></color>" : "");
