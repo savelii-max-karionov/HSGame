@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using HS;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private GameObject inputManager;
+    [SerializeField] private InputManager inputManager;
     [SerializeField] private float movementSpeed;
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private static List<float> levels = new List<float> {-3.1f, -2.1f};
@@ -18,9 +19,13 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         m_FacingRight = false;
-
     }
 
+    private void OnEnable()
+    {
+        m_FacingRight = false;
+        inputManager = FindObjectOfType<InputManager>();
+    }
 
     private void FixedUpdate()
     {
@@ -47,13 +52,9 @@ public class PlayerMovement : MonoBehaviour
     {
         /* GetAxisRaw returns only integer values 
            GetAxis returns real values that change depending on the lenght of the press*/
-        if (inputManager.GetComponent<MobileInputManager>() != null)
+        if (inputManager != null)
         {
-            horizontalRawAxis = inputManager.GetComponent<MobileInputManager>().horizontalMovement;
-        }
-        else if (inputManager.GetComponent<PCInputManager>() != null)
-        {
-            horizontalRawAxis = inputManager.GetComponent<PCInputManager>().horizontal;
+            horizontalRawAxis = inputManager.horizontal;
         }
 
         // When left shift is hold, player will stop moving.
@@ -69,18 +70,23 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector2 getVerticalMoveVec(Vector2 verticalMovementVector)
     {
-        if (inputManager.GetComponent<MobileInputManager>() != null)
-        {
-            verticalRawAxis = inputManager.GetComponent<MobileInputManager>().verticalMovement;
-            if (verticalRawAxis > 0) verticalRawAxis = 1;
-            if (verticalRawAxis < 0) verticalRawAxis = -1;
-        }
-        else if (inputManager.GetComponent<PCInputManager>() != null)
-        {
-            verticalRawAxis = inputManager.GetComponent<PCInputManager>().vertical;
-            if (verticalRawAxis > 0) verticalRawAxis = 1;
-            if (verticalRawAxis < 0) verticalRawAxis = -1;
-        }
+        verticalRawAxis = inputManager.vertical;
+        if (verticalRawAxis > 0) verticalRawAxis = 1;
+        if (verticalRawAxis < 0) verticalRawAxis = -1;
+        Debug.Log(verticalRawAxis);
+
+        //if (inputManager.GetComponent<MobileInputManager>() != null)
+        //{
+        //    verticalRawAxis = inputManager.vertical;
+        //    if (verticalRawAxis > 0) verticalRawAxis = 1;
+        //    if (verticalRawAxis < 0) verticalRawAxis = -1;
+        //}
+        //else if (inputManager.GetComponent<PCInputManager>() != null)
+        //{
+        //    verticalRawAxis = inputManager.GetComponent<PCInputManager>().vertical;
+        //    if (verticalRawAxis > 0) verticalRawAxis = 1;
+        //    if (verticalRawAxis < 0) verticalRawAxis = -1;
+        //}
 
         curLevel = (int)Mathf.Clamp(curLevel + verticalRawAxis, 0f, levels.Count - 1f);
 
