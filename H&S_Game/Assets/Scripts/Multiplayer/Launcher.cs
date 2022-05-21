@@ -3,6 +3,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 namespace HS
 {
@@ -116,6 +117,10 @@ namespace HS
 
         #region Public Methods
 
+        public void startGame()
+        {
+            SceneManager.LoadScene(1);
+        }
         public void joinLobby()
         {
             PhotonNetwork.JoinLobby(lobby);
@@ -238,9 +243,18 @@ namespace HS
             Debug.Log("Joined lobby!");
            
         }
-            
 
+        public override void OnPlayerEnteredRoom(Player newPlayer)
+        {
+            base.OnPlayerEnteredRoom(newPlayer);
+            RefreshPlayerListAndUI();
+        }
 
+        public override void OnPlayerLeftRoom(Player otherPlayer)
+        {
+            base.OnPlayerLeftRoom(otherPlayer);
+            RefreshPlayerListAndUI();
+        }
 
         public override void OnJoinRandomFailed(short returnCode, string message)
         {
@@ -255,16 +269,11 @@ namespace HS
 
             roomPanel.SetActive(true);
 
-            Debug.Log("PUN Basics Tutorial/Launcher: OnJoinedRoom() called by PUN. Now this client is in a room.");
+            Debug.Log("Now this client is in a room.");
 
             roomlistText.text = PhotonNetwork.CurrentRoom.PlayerCount.ToString();
 
-            cachedPlayers = PhotonNetwork.PlayerList;
-
-            for(int i = 0; i < cachedPlayers.Length; i++)
-            {
-                PlayerTexts[i].text = cachedPlayers[i].UserId;
-            }
+            RefreshPlayerListAndUI();
 
             // #Critical: We only load if we are the first player, else we rely on `PhotonNetwork.AutomaticallySyncScene` to sync our instance scene.
             //if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
@@ -275,6 +284,8 @@ namespace HS
             //    PhotonNetwork.LoadLevel("Room for 1");
             //}
         }
+
+
 
         #endregion
         #region private methods
@@ -296,6 +307,20 @@ namespace HS
             foreach (var i in cachedRoomList)
             {
                 roomlistText.text += i.Key;
+            }
+        }
+        private void RefreshPlayerListAndUI()
+        {
+            cachedPlayers = PhotonNetwork.PlayerList;
+
+            for(int i = 0; i < maxPlayersPerRoom; i++)
+            {
+                PlayerTexts[i].text = "";
+            }
+
+            for (int i = 0; i < cachedPlayers.Length; i++)
+            {
+                PlayerTexts[i].text = cachedPlayers[i].UserId;
             }
         }
         #endregion
