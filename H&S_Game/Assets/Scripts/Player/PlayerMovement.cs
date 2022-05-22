@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using HS;
+using Photon.Pun;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement :MonoBehaviour
 {
     [SerializeField] private InputManager inputManager;
     [SerializeField] private float movementSpeed;
@@ -29,6 +30,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        var photonView = GetComponent<PhotonView>();
+        if (photonView != null)
+        {
+            Debug.Log("cannot find PhotonView in this gameobject");
+        }
+        if (!photonView.IsMine) return;
         Vector2 horizontalMovementVector = new Vector2();
         Vector2 verticalMovementVector = new Vector2();
 

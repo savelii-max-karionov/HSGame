@@ -119,7 +119,10 @@ namespace HS
 
         public void startGame()
         {
-            SceneManager.LoadScene(1);
+            if (PhotonNetwork.IsMasterClient)
+            {
+                PhotonNetwork.LoadLevel(1);
+            }
         }
         public void joinLobby()
         {

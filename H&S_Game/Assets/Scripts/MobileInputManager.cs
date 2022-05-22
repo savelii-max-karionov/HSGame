@@ -10,12 +10,12 @@ public class MobileInputManager : InputManager
     public float verticalMovement=0;
 
 
-    public float horizontal
+    public override float horizontal
     {
         get { return horizontalMovement; }
     }
 
-    public float vertical
+    public override float vertical
     {
         get { return verticalMovement;}
     }

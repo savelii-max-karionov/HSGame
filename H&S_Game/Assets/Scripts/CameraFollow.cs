@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class CameraFollow : MonoBehaviour
 {
@@ -14,7 +15,23 @@ public class CameraFollow : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        var players = FindObjectsOfType<PlayerMovement>();
+        foreach (PlayerMovement player in players)
+        {
+            if(player.GetComponent<PhotonView>() != null)
+            {
+                var photonView = player.GetComponent<PhotonView>();
+                if (photonView.IsMine)
+                {
+                    playerTransform = player.transform;
+                }
+            }
+        }
+
+        if(playerTransform == null)
+        {
+            Debug.Log("Camera failed to find the player transform to follow");
+        }
     }
 
 
