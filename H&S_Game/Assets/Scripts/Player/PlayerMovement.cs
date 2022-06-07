@@ -31,7 +31,7 @@ public class PlayerMovement :MonoBehaviour
     private void FixedUpdate()
     {
         var photonView = GetComponent<PhotonView>();
-        if (photonView != null)
+        if (photonView == null)
         {
             Debug.Log("cannot find PhotonView in this gameobject");
         }
@@ -80,7 +80,7 @@ public class PlayerMovement :MonoBehaviour
         verticalRawAxis = inputManager.vertical;
         if (verticalRawAxis > 0) verticalRawAxis = 1;
         if (verticalRawAxis < 0) verticalRawAxis = -1;
-        Debug.Log(verticalRawAxis);
+        //Debug.Log(verticalRawAxis);
 
         //if (inputManager.GetComponent<MobileInputManager>() != null)
         //{

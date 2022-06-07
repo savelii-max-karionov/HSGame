@@ -19,19 +19,19 @@ public class HidingObject : InteractableObject
     {
     }
 
-    private new void OnMouseUp()
+    public override void mouseUp()
     {
         if (mouseHoldTime < holdThreshold)
         {
-            base.OnMouseUp();
+            base.mouseUp();
         }       
         hasChangedHidenState = false;
         mouseHoldTime = 0f;
     }
-    private void OnMouseDrag()
+    private void MouseDrag()
     {
         mouseHoldTime += Time.deltaTime;
-        if(!hasChangedHidenState && isOpen && mouseHoldTime > holdThreshold)
+        if(!hasChangedHidenState && mouseHoldTime > holdThreshold)
         {
             if (!isHiden)
             {
@@ -45,6 +45,7 @@ public class HidingObject : InteractableObject
                 Debug.Log("comming out from " + gameObject.name);
                 hasChangedHidenState = true;
             }
+            isOpen = false;
         }
         
     }

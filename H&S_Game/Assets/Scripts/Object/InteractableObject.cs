@@ -22,7 +22,7 @@ public class InteractableObject : MonoBehaviour
         
     }
 
-    protected void OnMouseUp()
+    public virtual void mouseUp()
     {
         isOpen = !isOpen;
         if (isOpen) onOpen?.Invoke();
