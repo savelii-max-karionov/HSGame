@@ -124,6 +124,11 @@ namespace HS
                 PhotonNetwork.LoadLevel(1);
             }
         }
+
+        public void becomeMonster()
+        {
+            GameStatus.IsMonster = true;
+        }
         public void joinLobby()
         {
             PhotonNetwork.JoinLobby(lobby);

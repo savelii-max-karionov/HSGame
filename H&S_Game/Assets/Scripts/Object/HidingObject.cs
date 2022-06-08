@@ -14,21 +14,22 @@ public class HidingObject : InteractableObject
     private bool hasChangedHidenState = false;
 
 
+
     // Start is called before the first frame update
     void Start()
     {
     }
 
-    public override void mouseUp()
+    public override void mouseDown()
     {
         if (mouseHoldTime < holdThreshold)
         {
-            base.mouseUp();
+            base.mouseDown();
         }       
         hasChangedHidenState = false;
         mouseHoldTime = 0f;
     }
-    private void MouseDrag()
+    public override void mouseDrag()
     {
         mouseHoldTime += Time.deltaTime;
         if(!hasChangedHidenState && mouseHoldTime > holdThreshold)
@@ -37,16 +38,23 @@ public class HidingObject : InteractableObject
             {
                 isHiden = true;
                 Debug.Log("hiding into " + gameObject.name);
+                invokeHiddingEvent();
+                emptyHidingEvnet();
                 hasChangedHidenState = true;
             }
             else
             {
                 isHiden = false;
                 Debug.Log("comming out from " + gameObject.name);
+                invokeAppearingEvent();
+                emptyAppearingEvent();
                 hasChangedHidenState = true;
             }
             isOpen = false;
         }
         
     }
+
+
+
 }

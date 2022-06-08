@@ -9,7 +9,15 @@ public class PhotonManager : MonoBehaviourPun
     // Start is called before the first frame update
     void Awake()
     {
-        PhotonNetwork.Instantiate("PlayerObject", new Vector3(0, 0, 0), Quaternion.identity);
+        if(GameStatus.IsMonster)
+        {
+            PhotonNetwork.Instantiate("MonsterObject", new Vector3(0, 0, 0), Quaternion.identity);
+        }
+        else if (!GameStatus.IsMonster)
+        {
+            PhotonNetwork.Instantiate("PlayerObject", new Vector3(0, 0, 0), Quaternion.identity);
+        }
+        
     }
 
     // Update is called once per frame

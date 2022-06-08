@@ -37,6 +37,7 @@ public class CameraFollow : MonoBehaviour
 
     private void FixedUpdate()
     {
+        var playerComponent = playerTransform?.GetComponent<PlayerComponent>();
         if (Input.GetKey(KeyCode.LeftShift))
         {
             Vector3 movVec = new Vector3(Input.GetAxis("Horizontal"), 0, 0);
@@ -52,7 +53,7 @@ public class CameraFollow : MonoBehaviour
             transform.position += deltaPos;
             if (transform.position == playerTransform.position) isRestoring = false;
         }
-        else
+        else if(playerTransform != null&&playerComponent!=null&&playerComponent.IsHiding==false)
         {
             movementVector.x = playerTransform.position.x;
             movementVector.y = heightOffset;

@@ -45,6 +45,8 @@ namespace Com.MyCompany.MyGame
 
         #region Private Methods
 
+   
+
 
         void LoadArena()
         {
