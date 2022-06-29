@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerComponent : MonoBehaviour
 {
     private bool isHiding = false;
-
+    List<Gadget> Inventory;
 
     public static List<GameObject> playerList=new List<GameObject>();
 
@@ -15,6 +15,7 @@ public class PlayerComponent : MonoBehaviour
     void Start()
     {
         playerList.Add(gameObject);
+        Inventory = new List<Gadget>(8);
     }
 
     // Update is called once per frame
