@@ -6,6 +6,7 @@ TagManager:
   tags:
   - HidingObject
   - Monster
+  - Gadget
   layers:
   - Default
   - TransparentFX
