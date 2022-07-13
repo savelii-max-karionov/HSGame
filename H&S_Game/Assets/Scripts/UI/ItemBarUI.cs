@@ -12,7 +12,7 @@ public class ItemBarUI : MonoBehaviour
     GameObject Handle;
     EscapeeComponent escapee;
     InventoryManager inventoryManager;
-    List<Image> gadgetImgs;
+    List<GadgetUIComponent> gadgetUIComponents;
     
 
 
@@ -27,20 +27,20 @@ public class ItemBarUI : MonoBehaviour
                 escapee = i.GetComponent<EscapeeComponent>();
                 inventoryManager = escapee.inventoryManager;
             }
-        }
+        } 
 
         if(inventoryManager == null)
         {
             Debug.LogError("Inventory manager not found");
         }
 
-        gadgetImgs = new List<Image>();
-        var tempList = Slots.GetComponentsInChildren<Image>();
-        foreach(var image in tempList)
+        gadgetUIComponents = new List<GadgetUIComponent>();
+        var tempList = Slots.GetComponentsInChildren<GadgetUIComponent>();
+        foreach(var gadgetUIComponent in tempList)
         {
-            if (image.gameObject.tag == "Gadget")
+            if (gadgetUIComponent.gameObject.tag == "Gadget")
             {
-                gadgetImgs.Add(image);
+                gadgetUIComponents.Add(gadgetUIComponent);
             }
         }
         refresh();
@@ -68,18 +68,19 @@ public class ItemBarUI : MonoBehaviour
         {
             if (slots[i].isEmpty)
             {
-                gadgetImgs[i].gameObject.SetActive(false);
+                gadgetUIComponents[i].gameObject.SetActive(false);
             }
             else
             {
-                gadgetImgs[i].gameObject.SetActive(true);
-                gadgetImgs[i].sprite = slots[i].getGadgetStack().gadget.icon;
+                gadgetUIComponents[i].gameObject.SetActive(true);
+                gadgetUIComponents[i].Image.sprite = slots[i].getGadgetStack().gadget.icon;
+                gadgetUIComponents[i].GadgetObject = slots[i].getPrefab();
                 int currentIndex = i;
-                gadgetImgs[i].GetComponent<Button>().onClick.AddListener(() => {
+                gadgetUIComponents[i].GetComponent<Button>().onClick.AddListener(() => {
                     inventoryManager.useGadget(escapee, currentIndex);
                     if (inventoryManager.getSlots()[currentIndex].isEmpty)
                     {
-                        gadgetImgs[currentIndex].GetComponent<Button>().onClick.RemoveAllListeners();
+                        gadgetUIComponents[currentIndex].GetComponent<Button>().onClick.RemoveAllListeners();
                     }
                     
                 }); 

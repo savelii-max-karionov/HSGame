@@ -29,8 +29,8 @@ public class GadgetComponent : MonoBehaviour
                 var escapeeComponent = i.GetComponent<EscapeeComponent>();
                 if (escapeeComponent != null)
                 {
-                    escapeeComponent.inventoryManager.addGadget(gadget, 1);
-                    Destroy(gameObject);
+                    escapeeComponent.inventoryManager.addGadget(gadget,gameObject, 1);
+                    gameObject.SetActive(false);
                 }
             }
         }

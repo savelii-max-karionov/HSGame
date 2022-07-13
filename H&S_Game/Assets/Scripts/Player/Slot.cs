@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using UnityEngine;
 
 public class Slot
 {
     public bool isEmpty = true;
     GadgetStack stack;
+    GameObject prefab;
 
 
     public Slot()
@@ -24,6 +25,11 @@ public class Slot
         stack.num = num;
     }
 
+    public void setPrefab(GameObject obj)
+    {
+        prefab = obj;
+    }
+
     /// <summary>
     /// Empty the slot.
     /// </summary>
@@ -34,6 +40,7 @@ public class Slot
         GadgetStack ret = stack;
         stack.gadget = null;
         stack.num = 0;
+        prefab = null;
         return ret;
     }
 
@@ -50,6 +57,11 @@ public class Slot
     public GadgetStack getGadgetStack()
     {
         return stack;
+    }
+
+    public GameObject getPrefab()
+    {
+        return prefab;
     }
 }
 

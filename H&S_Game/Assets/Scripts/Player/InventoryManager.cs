@@ -26,13 +26,14 @@ public class InventoryManager
     /// Add gadget to the slot with minimum index.
     /// </summary>
     /// <param name="gadget"></param>
-    public void addGadget(Gadget gadget, int num)
+    public void addGadget(Gadget gadget,GameObject prefab, int num)
     {
         for(int i = 0; i < inventorySize; i++)
         {
             if (inventory[i].isEmpty)
             {
                 inventory[i].setGadgetStack(gadget,num);
+                inventory[i].setPrefab(prefab);
                 itemBarUI.refresh();
                 return;
             }
@@ -75,6 +76,11 @@ public class InventoryManager
         return true;
     }
 
+    public bool removeAll(int index)
+    {
+        return removeGadget(index, inventory[index].getGadgetStack().num);
+    }
+
     public void useGadget(EscapeeComponent escapee, int index)
     {
         if (index < 0 || index >= inventorySize)
@@ -92,6 +98,7 @@ public class InventoryManager
         inventory[index].getGadgetStack().gadget.OnUse(escapee);
         removeGadget(index, 1);
     }
+
 
     public List<Slot> getSlots()
     {
