@@ -19,7 +19,7 @@ public class GadgetComponent : MonoBehaviour
         
     }
 
-    private void OnMouseDown()
+    public void OnClicked()
     {
         foreach(var i in PlayerComponent.playerList)
         {

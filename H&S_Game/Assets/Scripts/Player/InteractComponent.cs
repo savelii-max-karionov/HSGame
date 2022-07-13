@@ -29,13 +29,20 @@ public class InteractComponent : MonoBehaviour
             RaycastHit2D rayHit = Physics2D.GetRayIntersection(Camera.main.ScreenPointToRay(Input.mousePosition));
             if (rayHit.transform != null)
             {
-                var interactObj = rayHit.transform.gameObject.GetComponent<InteractableObject>();
+                var hitObject = rayHit.transform.gameObject;
+                var interactObj = hitObject.GetComponent<InteractableObject>();
+                var gadget = hitObject.GetComponent<GadgetComponent>();
                 if (interactObj != null)
                 {
                     interactObj.registerHidingEvent(hide);
                     interactObj.registerAppearingEvent(appear);
                     interactObj.mouseDown();
                 }
+                else if(gadget != null)
+                {
+                    gadget.OnClicked(); 
+                }
+                
             }
         }
          // If the player is holding the click and there is an interactable object within rnage.

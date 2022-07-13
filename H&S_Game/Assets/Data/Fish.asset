@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11d7ebb47f3dbe247a3e81840d8540fd, type: 3}
   m_Name: Fish
   m_EditorClassIdentifier: 
-  name: 
-  description: 
-  icon: {fileID: 0}
-  restoreAmount: 0
+  name: fish
+  description: a lovely fish
+  icon: {fileID: 21300000, guid: a19d8120c69d4d54e8e92850fc1697dc, type: 3}
+  restoreAmount: 100

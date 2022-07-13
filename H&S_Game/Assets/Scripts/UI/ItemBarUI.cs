@@ -43,6 +43,7 @@ public class ItemBarUI : MonoBehaviour
                 gadgetImgs.Add(image);
             }
         }
+        refresh();
        
     }
     void Update()
@@ -57,6 +58,9 @@ public class ItemBarUI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Refresh the Item Bar UI according to the gadgets in the Inve3ntory Manager.
+    /// </summary>
     public void refresh()
     {
         var slots = inventoryManager.getSlots();
