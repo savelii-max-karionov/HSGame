@@ -74,9 +74,14 @@ public class ItemBarUI : MonoBehaviour
             {
                 gadgetImgs[i].gameObject.SetActive(true);
                 gadgetImgs[i].sprite = slots[i].getGadgetStack().gadget.icon;
-                int temp = i;
+                int currentIndex = i;
                 gadgetImgs[i].GetComponent<Button>().onClick.AddListener(() => {
-                    inventoryManager.useGadget(escapee, temp);
+                    inventoryManager.useGadget(escapee, currentIndex);
+                    if (inventoryManager.getSlots()[currentIndex].isEmpty)
+                    {
+                        gadgetImgs[currentIndex].GetComponent<Button>().onClick.RemoveAllListeners();
+                    }
+                    
                 }); 
             }
             
