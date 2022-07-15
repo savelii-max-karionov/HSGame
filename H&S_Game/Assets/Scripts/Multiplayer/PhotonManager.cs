@@ -17,7 +17,17 @@ public class PhotonManager : MonoBehaviourPun
         {
             PhotonNetwork.Instantiate("PlayerObject", new Vector3(0, 0, 0), Quaternion.identity);
         }
-        
+
+        if(PhotonNetwork.IsMasterClient)
+        {
+            AddGadgetInScene();
+        }
+
+    }
+
+    private void AddGadgetInScene()
+    {
+        PhotonNetwork.Instantiate("Apple", new Vector3(1, 1, 0), Quaternion.identity);
     }
 
     // Update is called once per frame

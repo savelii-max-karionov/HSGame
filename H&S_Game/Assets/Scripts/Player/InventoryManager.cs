@@ -89,7 +89,7 @@ public class InventoryManager
             return;
         }
 
-        if (inventory[index].isEmpty )
+        if (inventory[index].isEmpty)
         {
             Debug.Log(System.Reflection.MethodBase.GetCurrentMethod().Name + ": slot is empty");
             return;

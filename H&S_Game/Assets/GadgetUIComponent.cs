@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -7,6 +8,8 @@ using UnityEngine.UI;
 public class GadgetUIComponent : EventTrigger
 {
     public int index;
+    public float draggingThresholdTime=0.5f;
+    float clickedTime = 0f;
 
     GameObject draggingObj;
     //Button button;
@@ -14,12 +17,13 @@ public class GadgetUIComponent : EventTrigger
     EscapeeComponent controlledPlayer;
     GameObject gadgetObject;
     InventoryManager inventoryManager;
+    bool isDragging = false;
 
     public GameObject GadgetObject { get => gadgetObject; set => gadgetObject = value; }
     public Image Image { get => image; set => image = value; }
 
-    // Start is called before the first frame update
-    void Start()
+    //BUG: If this function is Start, it will not be called after scene is loaded..
+    private void OnEnable()
     {
        Image = GetComponent<Image>();
 
@@ -29,12 +33,11 @@ public class GadgetUIComponent : EventTrigger
             if (photonView && photonView.IsMine)
             {
                 controlledPlayer = player.GetComponent<EscapeeComponent>();
-                inventoryManager = controlledPlayer.inventoryManager;
+                if (controlledPlayer)
+                {
+                    inventoryManager = controlledPlayer.inventoryManager;
+                }
             }
-        }
-        if(controlledPlayer == null)
-        {
-            Debug.LogError("Controlled player not found");
         }
 
     }
@@ -42,63 +45,82 @@ public class GadgetUIComponent : EventTrigger
     // Update is called once per frame
     void Update()
     {
-        
+        if (isDragging)
+        {
+            clickedTime += Time.deltaTime;
+        }
     }
 
-    public override void OnPointerDown(PointerEventData eventData)
+    public override void OnBeginDrag(PointerEventData eventData)
     { 
-        draggingObj = new GameObject("dragging object");
-        draggingObj.transform.parent = GameObject.Find("Canvas").transform;
-        var draggingImg = draggingObj.AddComponent<Image>();
-        draggingImg.sprite = Image.sprite;
-        draggingObj.transform.SetAsLastSibling(); 
-
-
+        // If the dragging time is less than the threshold, nothing will happen.
+        clickedTime = 0f;
+        isDragging = true;
     }
 
     public override void OnDrag(PointerEventData eventData)
     {
         base.OnDrag(eventData);
-        if(draggingObj != null)
+
+        if (clickedTime < draggingThresholdTime) return;
+
+        if (!draggingObj)
         {
-            //if(button != null)
-            //{
-            //    button.enabled = false;
-            //}
+            createAndInitDraggingObj();
+        }
+        else
+        {
             draggingObj.transform.position = Input.mousePosition;
-            Debug.Log(draggingObj.transform.position);
         }
     }
 
-    public override void OnPointerUp(PointerEventData eventData)
+    public override void OnEndDrag(PointerEventData eventData)
     {
-        base.OnPointerUp(eventData);
+        base.OnEndDrag(eventData);
+
+        isDragging = false;
+        if (clickedTime < draggingThresholdTime) return;
+
         if (draggingObj != null)
         {
-            Debug.Log("finally at"+draggingObj.transform.position);
             Destroy(draggingObj);
         }
-        //if (button != null)
-        //{
-        //    button.enabled = true;
-        //}
 
-        if(GadgetObject == null)
+        if(gadgetObject == null)
         {
             Debug.LogError("Missing gadget data");
         }
-        var newGadgetObj = GadgetObject.gameObject;
-        newGadgetObj.SetActive(true);
+
+        var gadgetPhotonView = gadgetObject.gameObject.GetComponent<PhotonView>();
+        if (!gadgetPhotonView)
+        {
+            Debug.LogError("Gadget doesnt contain PhotonView");
+            return;
+        }
 
         var anchor = controlledPlayer.transform.Find("DropAnchor");
-        if(anchor != null)
+        if (!anchor)
         {
-            newGadgetObj.transform.position = controlledPlayer.transform.Find("DropAnchor").transform.position;
-            inventoryManager.removeAll(index);
-            clearGadgetUI();
+            Debug.LogError("Cannot find the dropping anchor in the controlled object");
+            return;
         }
+
+        gadgetPhotonView.RPC("appear", RpcTarget.All, anchor.transform.position);
+        inventoryManager.removeAll(index);
+        clearGadgetUI();
     }
 
+    private void createAndInitDraggingObj()
+    {
+        draggingObj = new GameObject("dragging object");
+        draggingObj.transform.parent = GameObject.Find("Canvas").transform;
+        //The rendering order depends on the hirarchy.
+        draggingObj.transform.SetAsLastSibling();
+
+        var draggingImg = draggingObj.AddComponent<Image>();
+        draggingImg.sprite = Image.sprite;
+        draggingObj.transform.position = Input.mousePosition;
+    }
     void clearGadgetUI()
     {
         gameObject.SetActive(false);

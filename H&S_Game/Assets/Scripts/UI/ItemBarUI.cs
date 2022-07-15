@@ -18,6 +18,8 @@ public class ItemBarUI : MonoBehaviour
 
     private void Start()
     {
+        amIMonster();
+
         animator = GetComponent<Animator>();
         foreach (var i in PlayerComponent.playerList)
         {
@@ -25,18 +27,28 @@ public class ItemBarUI : MonoBehaviour
             if (photonView && photonView.IsMine)
             {
                 escapee = i.GetComponent<EscapeeComponent>();
-                inventoryManager = escapee.inventoryManager;
+                // If the player is monster, dont show the item bar.
+                if (escapee)
+                {
+                    inventoryManager = escapee.inventoryManager;
+                }
+                else
+                {
+                    gameObject.SetActive(false);
+                    return;
+                }
+                
             }
-        } 
+        }
 
-        if(inventoryManager == null)
+        if (inventoryManager == null)
         {
             Debug.LogError("Inventory manager not found");
         }
 
         gadgetUIComponents = new List<GadgetUIComponent>();
         var tempList = Slots.GetComponentsInChildren<GadgetUIComponent>();
-        foreach(var gadgetUIComponent in tempList)
+        foreach (var gadgetUIComponent in tempList)
         {
             if (gadgetUIComponent.gameObject.tag == "Gadget")
             {
@@ -44,7 +56,22 @@ public class ItemBarUI : MonoBehaviour
             }
         }
         refresh();
-       
+
+        void amIMonster()
+        {
+            foreach (var i in PlayerComponent.playerList)
+            {
+                var photonView = i.GetComponent<Photon.Pun.PhotonView>();
+                if (photonView && photonView.IsMine)
+                {
+                    var escapeeComponent = i.GetComponent<EscapeeComponent>();
+                    if (escapeeComponent == null)
+                    {
+                        gameObject.SetActive(false);
+                    }
+                }
+            }
+        }
     }
     void Update()
     {
@@ -60,7 +87,7 @@ public class ItemBarUI : MonoBehaviour
 
     /// <summary>
     /// Refresh the Item Bar UI according to the gadgets in the Inve3ntory Manager.
-    /// </summary>
+    /// </summaary>
     public void refresh()
     {
         var slots = inventoryManager.getSlots();
