@@ -1,9 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 
-[CreateAssetMenu(menuName ="Inventory/RestoreGadget",fileName ="new file")]
+[CreateAssetMenu(menuName = "Inventory/RestoreGadget", fileName = "new file")]
 public class RestoreGadget : Gadget
 {
     public float restoreAmount;

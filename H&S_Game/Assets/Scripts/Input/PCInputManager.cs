@@ -1,14 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using HS;
+using UnityEngine;
 
-public class PCInputManager :InputManager
+public class PCInputManager : InputManager
 {
     private Vector3 mousePos;
     private Vector2 mousePos2D;
 
-    public override float  horizontal
+    public override float horizontal
     {
         get
         {
@@ -16,7 +14,8 @@ public class PCInputManager :InputManager
         }
     }
 
-    public override float vertical { 
+    public override float vertical
+    {
         get
         {
             return Input.GetAxis("Vertical");

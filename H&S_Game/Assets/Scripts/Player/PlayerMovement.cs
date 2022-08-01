@@ -1,21 +1,20 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using HS;
 using Photon.Pun;
+using UnityEngine;
 
-public class PlayerMovement :MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private InputManager inputManager;
     [SerializeField] private float movementSpeed;
     [SerializeField] private Rigidbody2D rb;
-    [SerializeField] private static List<float> levels = new List<float> {-3.1f, -2.1f};
+    [SerializeField] private static List<float> levels = new List<float> { -3.1f, -2.1f };
     private Vector2 horizontalMovementVector;
     private float horizontalRawAxis;
     private float verticalRawAxis;
     private bool m_FacingRight;
-    public int curLevel=0;
-    
+    public int curLevel = 0;
+
     // Start is called before the first frame update
     void Start()
     {

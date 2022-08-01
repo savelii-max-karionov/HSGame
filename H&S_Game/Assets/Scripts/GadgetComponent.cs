@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using Photon.Pun;
+using UnityEngine;
 
 public class GadgetComponent : MonoBehaviour
 {
@@ -20,20 +18,20 @@ public class GadgetComponent : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void OnClicked()
     {
-        foreach(var i in PlayerComponent.playerList)
+        foreach (var i in PlayerComponent.playerList)
         {
             var photonView = i.GetComponent<Photon.Pun.PhotonView>();
-            if (photonView&&photonView.IsMine)
+            if (photonView && photonView.IsMine)
             {
                 var escapeeComponent = i.GetComponent<EscapeeComponent>();
                 if (escapeeComponent != null)
                 {
-                    escapeeComponent.inventoryManager.addGadget(gadget,gameObject, 1);
+                    escapeeComponent.inventoryManager.addGadget(gadget, gameObject, 1);
                     photonview.RPC("disappear", RpcTarget.All);
                 }
             }
@@ -53,5 +51,5 @@ public class GadgetComponent : MonoBehaviour
         gameObject.transform.position = position;
     }
 
-    
+
 }

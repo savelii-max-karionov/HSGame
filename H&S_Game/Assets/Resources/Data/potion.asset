@@ -10,9 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 11d7ebb47f3dbe247a3e81840d8540fd, type: 3}
-  m_Name: Apple
+  m_Name: potion
   m_EditorClassIdentifier: 
-  name: Apple
-  description: a test apple
-  icon: {fileID: 21300000, guid: 85bafec2a6869e746a9d15e589efbdab, type: 3}
-  restoreAmount: 4
+  name: Potion
+  id: 202
+  description: test crafting
+  icon: {fileID: 21300000, guid: 78e453e599700d347bdbae5820483f50, type: 3}
+  isCraftable: 1
+  recipe:
+  - 200
+  - 201
+  restoreAmount: 100

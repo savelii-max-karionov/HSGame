@@ -1,12 +1,6 @@
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
-
-
-using Photon.Pun;
-using Photon.Realtime;
-
-
-using System.Collections;
 
 
 namespace HS

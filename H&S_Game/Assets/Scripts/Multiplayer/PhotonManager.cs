@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using Photon.Pun;
+using UnityEngine;
 public class PhotonManager : MonoBehaviourPun
 {
 
@@ -9,7 +7,7 @@ public class PhotonManager : MonoBehaviourPun
     // Start is called before the first frame update
     void Awake()
     {
-        if(GameStatus.IsMonster)
+        if (GameStatus.IsMonster)
         {
             PhotonNetwork.Instantiate("MonsterObject", new Vector3(0, 0, 0), Quaternion.identity);
         }
@@ -18,7 +16,7 @@ public class PhotonManager : MonoBehaviourPun
             PhotonNetwork.Instantiate("PlayerObject", new Vector3(0, 0, 0), Quaternion.identity);
         }
 
-        if(PhotonNetwork.IsMasterClient)
+        if (PhotonNetwork.IsMasterClient)
         {
             AddGadgetInScene();
         }
@@ -27,14 +25,16 @@ public class PhotonManager : MonoBehaviourPun
 
     private void AddGadgetInScene()
     {
-        PhotonNetwork.Instantiate("Apple", new Vector3(1, 1, 0), Quaternion.identity);
+        PhotonNetwork.Instantiate("Gadgets/Apple", new Vector3(1, 1, 0), Quaternion.identity);
+        PhotonNetwork.Instantiate("Gadgets/Apple", new Vector3(1, 0, 0), Quaternion.identity);
+        PhotonNetwork.Instantiate("Gadgets/Fish", new Vector3(-1, 0, 0), Quaternion.identity);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
-    
+
 }

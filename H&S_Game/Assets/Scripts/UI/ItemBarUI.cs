@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -13,7 +12,7 @@ public class ItemBarUI : MonoBehaviour
     EscapeeComponent escapee;
     InventoryManager inventoryManager;
     List<GadgetUIComponent> gadgetUIComponents;
-    
+
 
 
     private void Start()
@@ -37,7 +36,7 @@ public class ItemBarUI : MonoBehaviour
                     gameObject.SetActive(false);
                     return;
                 }
-                
+
             }
         }
 
@@ -90,11 +89,13 @@ public class ItemBarUI : MonoBehaviour
     /// </summaary>
     public void refresh()
     {
+        Debug.Log("Refresh called");
         var slots = inventoryManager.getSlots();
-        for(int i = 0; i < slots.Count; i++)
+        for (int i = 0; i < slots.Count; i++)
         {
             if (slots[i].isEmpty)
             {
+                gadgetUIComponents[i].GetComponent<Button>().onClick.RemoveAllListeners();
                 gadgetUIComponents[i].gameObject.SetActive(false);
             }
             else
@@ -103,16 +104,20 @@ public class ItemBarUI : MonoBehaviour
                 gadgetUIComponents[i].Image.sprite = slots[i].getGadgetStack().gadget.icon;
                 gadgetUIComponents[i].GadgetObject = slots[i].getPrefab();
                 int currentIndex = i;
-                gadgetUIComponents[i].GetComponent<Button>().onClick.AddListener(() => {
+                gadgetUIComponents[i].GetComponent<Button>().onClick.RemoveAllListeners();
+                gadgetUIComponents[i].GetComponent<Button>().onClick.AddListener(() =>
+                {
+                    Debug.Log("button " + currentIndex + " triggered");
                     inventoryManager.useGadget(escapee, currentIndex);
                     if (inventoryManager.getSlots()[currentIndex].isEmpty)
                     {
+                        Debug.Log("button " + currentIndex + " onclick removed");
                         gadgetUIComponents[currentIndex].GetComponent<Button>().onClick.RemoveAllListeners();
                     }
-                    
-                }); 
+
+                });
             }
-            
+
         }
     }
 

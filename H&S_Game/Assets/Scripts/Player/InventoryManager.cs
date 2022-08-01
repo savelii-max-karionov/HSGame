@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class InventoryManager
@@ -8,13 +7,13 @@ public class InventoryManager
     List<Slot> inventory;
     const int inventorySize = 8;
     EscapeeComponent escapee;
-    
+
 
 
     public InventoryManager(EscapeeComponent owner)
     {
         inventory = new List<Slot>(new Slot[inventorySize]);
-        for(int i = 0; i < inventorySize; i++)
+        for (int i = 0; i < inventorySize; i++)
         {
             inventory[i] = new Slot();
         }
@@ -26,13 +25,13 @@ public class InventoryManager
     /// Add gadget to the slot with minimum index.
     /// </summary>
     /// <param name="gadget"></param>
-    public void addGadget(Gadget gadget,GameObject prefab, int num)
+    public void addGadget(Gadget gadget, GameObject prefab, int num)
     {
-        for(int i = 0; i < inventorySize; i++)
+        for (int i = 0; i < inventorySize; i++)
         {
             if (inventory[i].isEmpty)
             {
-                inventory[i].setGadgetStack(gadget,num);
+                inventory[i].setGadgetStack(gadget, num);
                 inventory[i].setPrefab(prefab);
                 itemBarUI.refresh();
                 return;
@@ -53,7 +52,7 @@ public class InventoryManager
     /// <returns>If the inventory does not contain enough gadget or the index is invalid, it will return false, otherwise it will return true.</returns>
     public bool removeGadget(int index, int num)
     {
-        if(index < 0 || index >= inventorySize)
+        if (index < 0 || index >= inventorySize)
         {
             Debug.Log(System.Reflection.MethodBase.GetCurrentMethod().Name + ": index not invalid");
             return false;
@@ -85,13 +84,13 @@ public class InventoryManager
     {
         if (index < 0 || index >= inventorySize)
         {
-            Debug.Log(System.Reflection.MethodBase.GetCurrentMethod().Name + ": index not invalid");
+            Debug.Log(System.Reflection.MethodBase.GetCurrentMethod().Name + "at" + index + ": index not invalid");
             return;
         }
 
         if (inventory[index].isEmpty)
         {
-            Debug.Log(System.Reflection.MethodBase.GetCurrentMethod().Name + ": slot is empty");
+            Debug.Log(System.Reflection.MethodBase.GetCurrentMethod().Name + "at" + index + ": slot is empty");
             return;
         }
 
@@ -103,6 +102,15 @@ public class InventoryManager
     public List<Slot> getSlots()
     {
         return inventory;
+    }
+
+    // Now it ignores the number of gadget.
+    public void onCraft(int toRemoveIndex, int newGadgetIndex, GameObject craftedObject)
+    {
+        removeAll(newGadgetIndex);
+        addGadget(craftedObject.GetComponent<GadgetComponent>().gadget, craftedObject, 1);
+        removeAll(toRemoveIndex);
+        itemBarUI.refresh();
     }
 }
 

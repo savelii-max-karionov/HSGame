@@ -1,13 +1,9 @@
-using System;
-using System.Collections;
-
-
-using UnityEngine;
-using UnityEngine.SceneManagement;
 
 
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 namespace Com.MyCompany.MyGame
@@ -45,7 +41,7 @@ namespace Com.MyCompany.MyGame
 
         #region Private Methods
 
-   
+
 
 
         void LoadArena()

@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 public class HidingObject : InteractableObject
 {
@@ -25,14 +22,14 @@ public class HidingObject : InteractableObject
         if (mouseHoldTime < holdThreshold)
         {
             base.mouseDown();
-        }       
+        }
         hasChangedHidenState = false;
         mouseHoldTime = 0f;
     }
     public override void mouseDrag()
     {
         mouseHoldTime += Time.deltaTime;
-        if(!hasChangedHidenState && mouseHoldTime > holdThreshold)
+        if (!hasChangedHidenState && mouseHoldTime > holdThreshold)
         {
             if (!isHiden)
             {
@@ -52,7 +49,7 @@ public class HidingObject : InteractableObject
             }
             isOpen = false;
         }
-        
+
     }
 
 

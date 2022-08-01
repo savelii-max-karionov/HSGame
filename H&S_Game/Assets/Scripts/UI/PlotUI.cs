@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlotUI : MonoBehaviour
@@ -19,7 +17,7 @@ public class PlotUI : MonoBehaviour
     //            inventoryManager = escapee.inventoryManager;
     //        }
     //    }
-       
+
     //}
 
     //private void OnMouseDown()

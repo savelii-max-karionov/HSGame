@@ -1,9 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class EscapeeComponent : PlayerComponent
-{   
+{
 
     public InventoryManager inventoryManager;
     public ItemBarUI itemBarUI;
@@ -12,12 +8,12 @@ public class EscapeeComponent : PlayerComponent
     private new void Awake()
     {
         base.Awake();
-        inventoryManager=new InventoryManager(this);
+        inventoryManager = new InventoryManager(this);
     }
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
 

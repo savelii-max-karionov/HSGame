@@ -1,9 +1,8 @@
-using UnityEngine;
+using System.Collections.Generic;
 using Photon.Pun;
 using Photon.Realtime;
-using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
 namespace HS
 {
@@ -107,7 +106,7 @@ namespace HS
             // this makes sure we can use PhotonNetwork.LoadLevel() on the master client and all clients in the same room sync their level automatically
             PhotonNetwork.AutomaticallySyncScene = true;
 
-            
+
         }
 
 
@@ -152,7 +151,7 @@ namespace HS
 
             this.userID = UserIDText.text;
             PhotonNetwork.AuthValues.UserId = this.userID;
-        
+
 
             //this.ConnectingLabel.SetActive(true);
 
@@ -177,7 +176,7 @@ namespace HS
         public void joinRoom()
         {
             string roomName = roomNameInput.text;
-            PhotonNetwork.JoinOrCreateRoom(roomName,new RoomOptions{MaxPlayers=maxPlayersPerRoom,PublishUserId=true},lobby);
+            PhotonNetwork.JoinOrCreateRoom(roomName, new RoomOptions { MaxPlayers = maxPlayersPerRoom, PublishUserId = true }, lobby);
         }
 
         public void leaveRoom()
@@ -186,7 +185,7 @@ namespace HS
             lobbyPanel.SetActive(true);
             PhotonNetwork.LeaveRoom();
 
-            foreach(var i in PlayerTexts)
+            foreach (var i in PlayerTexts)
             {
                 i.text = "";
             }
@@ -223,12 +222,12 @@ namespace HS
             // #Critical: The first we try to do is to join a potential existing room. If there is, good, else, we'll be called back with OnJoinRandomFailed()
             //PhotonNetwork.JoinRandomRoom();
 
-            
+
 
         }
 
-        
-        
+
+
         public override void OnDisconnected(DisconnectCause cause)
         {
             //progressLabel.SetActive(false);
@@ -245,11 +244,11 @@ namespace HS
             Debug.Log("On Joined Lobby");
 
             roomNameInput.gameObject.SetActive(true);
-            
-            
+
+
 
             Debug.Log("Joined lobby!");
-           
+
         }
 
         public override void OnPlayerEnteredRoom(Player newPlayer)
@@ -269,7 +268,7 @@ namespace HS
             Debug.Log("PUN Basics Tutorial/Launcher:OnJoinRandomFailed() was called by PUN. No random room available, so we create one.\nCalling: PhotonNetwork.CreateRoom");
 
             // #Critical: we failed to join a random room, maybe none exists or they are all full. No worries, we create a new room.
-            PhotonNetwork.CreateRoom(null, new RoomOptions {MaxPlayers = maxPlayersPerRoom });
+            PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = maxPlayersPerRoom });
         }
 
         public override void OnJoinedRoom()
@@ -321,7 +320,7 @@ namespace HS
         {
             cachedPlayers = PhotonNetwork.PlayerList;
 
-            for(int i = 0; i < maxPlayersPerRoom; i++)
+            for (int i = 0; i < maxPlayersPerRoom; i++)
             {
                 PlayerTexts[i].text = "";
             }

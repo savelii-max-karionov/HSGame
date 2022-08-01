@@ -1,6 +1,5 @@
 using UnityEditor;
 using UnityEditor.EventSystems;
-using UnityEngine.EventSystems;
 
 [CustomEditor(typeof(GadgetUIComponent))]
 public class GadgetEventTriggerEditor : EventTriggerEditor

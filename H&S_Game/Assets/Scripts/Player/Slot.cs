@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Slot
 {
@@ -18,7 +13,7 @@ public class Slot
         stack = new GadgetStack();
     }
 
-    public void setGadgetStack(Gadget gadget,int num)
+    public void setGadgetStack(Gadget gadget, int num)
     {
         isEmpty = false;
         stack.gadget = gadget;
@@ -36,7 +31,7 @@ public class Slot
     /// <returns></returns>
     public GadgetStack removeAllGadgets()
     {
-        isEmpty=true;
+        isEmpty = true;
         GadgetStack ret = stack;
         stack.gadget = null;
         stack.num = 0;
