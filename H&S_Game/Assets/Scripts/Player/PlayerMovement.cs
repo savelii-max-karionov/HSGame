@@ -38,14 +38,16 @@ public class PlayerMovement : MonoBehaviour
         Vector2 horizontalMovementVector = new Vector2();
         Vector2 verticalMovementVector = new Vector2();
 
-        if (horizontalRawAxis > 0 && !m_FacingRight)
-        {
-            Flip();
-        }
-        else if (horizontalRawAxis < 0 && m_FacingRight)
-        {
-            Flip();
-        }
+
+        // Disappling flip for animation!
+        //if (horizontalRawAxis > 0 && !m_FacingRight)
+        //{
+        //    Flip();
+        //}
+        //else if (horizontalRawAxis < 0 && m_FacingRight)
+        //{
+        //    Flip();
+        //}
 
         horizontalMovementVector = getHorizontalMoveVec(horizontalMovementVector);
 
