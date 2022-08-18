@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using HS;
+using Photon.Pun;
 using UnityEngine;
 
 public abstract class PlayerAnimationManager : MonoBehaviour

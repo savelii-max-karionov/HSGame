@@ -25,14 +25,14 @@ public class InventoryManager
     /// Add gadget to the slot with minimum index.
     /// </summary>
     /// <param name="gadget"></param>
-    public void addGadget(Gadget gadget, GameObject prefab, int num)
+    public void addGadget(Gadget gadget, GameObject gadgetGameObj, int num)
     {
         for (int i = 0; i < inventorySize; i++)
         {
             if (inventory[i].isEmpty)
             {
                 inventory[i].setGadgetStack(gadget, num);
-                inventory[i].setPrefab(prefab);
+                inventory[i].setObj(gadgetGameObj);
                 itemBarUI.refresh();
                 return;
             }

@@ -4,7 +4,7 @@ public class Slot
 {
     public bool isEmpty = true;
     GadgetStack stack;
-    GameObject prefab;
+    GameObject gadgetGameObj;
 
 
     public Slot()
@@ -20,9 +20,9 @@ public class Slot
         stack.num = num;
     }
 
-    public void setPrefab(GameObject obj)
+    public void setObj(GameObject obj)
     {
-        prefab = obj;
+        gadgetGameObj = obj;
     }
 
     /// <summary>
@@ -35,7 +35,7 @@ public class Slot
         GadgetStack ret = stack;
         stack.gadget = null;
         stack.num = 0;
-        prefab = null;
+        gadgetGameObj = null;
         return ret;
     }
 
@@ -56,7 +56,7 @@ public class Slot
 
     public GameObject getPrefab()
     {
-        return prefab;
+        return gadgetGameObj;
     }
 }
 
