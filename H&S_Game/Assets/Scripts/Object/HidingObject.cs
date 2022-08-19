@@ -1,32 +1,30 @@
 using UnityEngine;
 
-public class HidingObject : InteractableObject
+public class HidingObject : OpenableObject
 {
+    public bool needOpen = false;
     [SerializeField] private BoxCollider2D hideCollider;
     [SerializeField] private GameObject playerVisual;
     //[SerializeField] private Animator animator;
-    private float mouseHoldTime = 0f;
-    private const float holdThreshold = 2f;
-    private bool isHiden = false;
+    protected float mouseHoldTime = 0f;
+    protected const float holdThreshold = 2f;
+    protected bool isHiden = false;
     private bool hasChangedHidenState = false;
 
 
 
-    // Start is called before the first frame update
-    void Start()
+    public override void onMouseDown()
     {
-    }
-
-    public override void mouseDown()
-    {
-        if (mouseHoldTime < holdThreshold)
+        if (needOpen && mouseHoldTime < holdThreshold)
         {
-            base.mouseDown();
+            isOpen = !isOpen;
+            onOpen?.Invoke();
+            Debug.Log(gameObject.name + ", open state: " + isOpen);
         }
         hasChangedHidenState = false;
         mouseHoldTime = 0f;
     }
-    public override void mouseDrag()
+    public override void onMouseDrag()
     {
         mouseHoldTime += Time.deltaTime;
         if (!hasChangedHidenState && mouseHoldTime > holdThreshold)

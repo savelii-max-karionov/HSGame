@@ -29,7 +29,7 @@ public class GadgetUIComponent : EventTrigger
         craftingManager = FindObjectOfType<CraftingManager>();
         canvas = FindObjectOfType<Canvas>();
 
-        foreach (var player in PlayerComponent.playerList)
+        foreach (var player in GameStatistics.playerList)
         {
             var photonView = player.GetComponent<Photon.Pun.PhotonView>();
 

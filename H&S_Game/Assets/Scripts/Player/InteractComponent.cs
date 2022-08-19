@@ -1,3 +1,4 @@
+using Photon.Pun;
 using UnityEngine;
 
 public class InteractComponent : MonoBehaviour
@@ -7,21 +8,32 @@ public class InteractComponent : MonoBehaviour
     public GameObject visualObject;
     public GameObject mainObject;
 
+    private float timeElaspedForTunneling;
+
 
     private Camera cam;
     private PlayerComponent playerComponent;
-
+    private bool isTransporting = false;
+    private TunnelingObject tunnelingObject;
+    private PhotonView photonView;
 
     private void Awake()
     {
         cam = Camera.main;
         playerComponent = GetComponent<PlayerComponent>();
+        photonView = mainObject.GetPhotonView();
+        if (!photonView)
+        {
+            Debug.Log("PhotonView not found");
+        }
     }
     private void Update()
     {
+        HandleTransporting();
+
         Collider2D[] colliders = new Collider2D[10];
         // If the player/monster click down and there is an interactable object within rnage.
-        if (Input.GetMouseButtonDown(0) && interactCollider.OverlapPoint(cam.ScreenToWorldPoint(Input.mousePosition)))
+        if (photonView.IsMine && Input.GetMouseButtonDown(0) && interactCollider.OverlapPoint(cam.ScreenToWorldPoint(Input.mousePosition)))
         {
 
             RaycastHit2D rayHit = Physics2D.GetRayIntersection(Camera.main.ScreenPointToRay(Input.mousePosition));
@@ -32,9 +44,12 @@ public class InteractComponent : MonoBehaviour
                 var gadget = hitObject.GetComponent<GadgetComponent>();
                 if (interactObj != null)
                 {
+                    // Describe how the character behave during the interaction.
                     interactObj.registerHidingEvent(hide);
-                    interactObj.registerAppearingEvent(appear);
-                    interactObj.mouseDown();
+                    interactObj.registerAppearingEvent(unhide);
+                    interactObj.registerTunnelingEvent(tunneling);
+
+                    interactObj.onMouseDown();
                 }
                 else if (gadget != null)
                 {
@@ -52,16 +67,47 @@ public class InteractComponent : MonoBehaviour
                 var interactObj = rayHit.transform.gameObject.GetComponent<InteractableObject>();
                 if (interactObj != null)
                 {
-                    interactObj.mouseDrag();
-
+                    interactObj.onMouseDrag();
                 }
+            }
+        }
+    }
+
+    private void HandleTransporting()
+    {
+        if (isTransporting)
+        {
+            // Move the gameObject from input vent to output vent.
+            mainObject.transform.position = Vector2.Lerp(tunnelingObject.input.transform.position, tunnelingObject.output.transform.position, timeElaspedForTunneling / tunnelingObject.transportTime);
+
+            timeElaspedForTunneling += Time.deltaTime;
+            if (timeElaspedForTunneling > tunnelingObject.transportTime)
+            {
+                isTransporting = false;
+
+                // appear
+                visualObject.SetActive(true);
+                
+                Transform outputPointObj = tunnelingObject.output.transform.Find("Output Point");
+                if(outputPointObj != null)
+                {
+                    mainObject.transform.position = outputPointObj.position;
+                }
+                else
+                {
+                    Debug.LogError("Output point not found in output vent");
+                }
+
+                // play appear animation
+                // TODO
+
+                Debug.Log("End tunnelling");
             }
         }
     }
 
     public void hide()
     {
-
         visualObject?.SetActive(false);
         var movementComponent = mainObject?.GetComponent<PlayerMovement>();
         if (movementComponent != null)
@@ -78,7 +124,7 @@ public class InteractComponent : MonoBehaviour
             Debug.LogWarning("player object not found!");
         }
     }
-    public void appear()
+    public void unhide()
     {
         visualObject?.SetActive(true);
         var movementComponent = mainObject?.GetComponent<PlayerMovement>();
@@ -95,5 +141,28 @@ public class InteractComponent : MonoBehaviour
         {
             Debug.LogWarning("player object not found!");
         }
+    }
+
+
+    /// <summary>
+    /// what the player behave when it's entering a vent.
+    /// </summary>
+    public void tunneling(TunnelingObject tunnelingObject)
+    {
+        Debug.Log("tunneling");
+
+        // Trigger entering event
+        // TODO
+
+        // disappear
+        visualObject.SetActive(false);
+
+        // movement of invisible player object
+        isTransporting = true;
+        this.tunnelingObject = tunnelingObject;
+        timeElaspedForTunneling = 0;
+
+        // appear after timeElasped has passed the required transporting time. It will be implemented in the Update.
+
     }
 }

@@ -5,15 +5,12 @@ public class PlayerComponent : MonoBehaviour
 {
     private bool isHiding = false;
 
-
-    public static List<GameObject> playerList = new List<GameObject>();
-
     public bool IsHiding { get => isHiding; set => isHiding = value; }
 
     // Start is called before the first frame update
     protected void Awake()
     {
-        playerList.Add(gameObject);
+        GameStatistics.playerList.Add(gameObject);
 
     }
 
@@ -25,6 +22,6 @@ public class PlayerComponent : MonoBehaviour
 
     private void OnDestroy()
     {
-        playerList.Remove(gameObject);
+        GameStatistics.playerList.Remove(gameObject);
     }
 }

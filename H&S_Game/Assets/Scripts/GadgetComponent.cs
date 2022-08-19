@@ -23,7 +23,7 @@ public class GadgetComponent : MonoBehaviour
 
     public void OnClicked()
     {
-        foreach (var i in PlayerComponent.playerList)
+        foreach (var i in GameStatistics.playerList)
         {
             var photonView = i.GetComponent<Photon.Pun.PhotonView>();
             if (photonView && photonView.IsMine)

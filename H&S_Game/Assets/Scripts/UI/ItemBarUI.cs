@@ -20,7 +20,7 @@ public class ItemBarUI : MonoBehaviour
         amIMonster();
 
         animator = GetComponent<Animator>();
-        foreach (var i in PlayerComponent.playerList)
+        foreach (var i in GameStatistics.playerList)
         {
             var photonView = i.GetComponent<Photon.Pun.PhotonView>();
             if (photonView && photonView.IsMine)
@@ -58,7 +58,7 @@ public class ItemBarUI : MonoBehaviour
 
         void amIMonster()
         {
-            foreach (var i in PlayerComponent.playerList)
+            foreach (var i in GameStatistics.playerList)
             {
                 var photonView = i.GetComponent<Photon.Pun.PhotonView>();
                 if (photonView && photonView.IsMine)

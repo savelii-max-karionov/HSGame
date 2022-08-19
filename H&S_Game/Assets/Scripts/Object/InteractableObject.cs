@@ -1,14 +1,13 @@
 using System;
 using UnityEngine;
 
-public class InteractableObject : MonoBehaviour
+public abstract class InteractableObject : MonoBehaviour
 {
-    protected bool isOpen = false;
-    public delegate Action openHandler();
-    public event openHandler onOpen;
 
-    public event Action OnHiden;
-    public event Action onAppear;
+    public Action onOpen;
+    public Action OnHiden;
+    public Action onAppear;
+    public Action<TunnelingObject> onTunneling;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,28 +20,30 @@ public class InteractableObject : MonoBehaviour
 
     }
 
-    public virtual void mouseDown()
-    {
-        isOpen = !isOpen;
-        onOpen?.Invoke();
-        Debug.Log(gameObject.name + ", open state: " + isOpen);
-    }
+    public abstract void onMouseDown();
 
-    public virtual void mouseDrag()
-    {
-
-    }
+    public abstract void onMouseDrag();
 
     public void registerHidingEvent(Action action)
     {
         OnHiden += action;
     }
 
+
     public void deregisterHidingEvent(Action action)
     {
         OnHiden -= action;
     }
 
+    public void registerTunnelingEvent(Action<TunnelingObject> action)
+    {
+        onTunneling += action;
+    }
+
+    public void deregisterTunnelingEvent(Action<TunnelingObject> action)
+    {
+        onTunneling -= action;
+    }
     public void registerAppearingEvent(Action action)
     {
         onAppear += action;
@@ -53,14 +54,19 @@ public class InteractableObject : MonoBehaviour
         onAppear -= action;
     }
 
-    public void invokeHiddingEvent()
+    protected void invokeHiddingEvent()
     {
         OnHiden?.Invoke();
     }
 
-    public void invokeAppearingEvent()
+    protected void invokeAppearingEvent()
     {
         onAppear?.Invoke();
+    }
+
+    protected virtual void invokeTunnelingEvent()
+    {
+
     }
 
     public void emptyHidingEvnet()
@@ -70,6 +76,10 @@ public class InteractableObject : MonoBehaviour
     public void emptyAppearingEvent()
     {
         onAppear = null;
+    }
+    public void emptyTunnelingEvent()
+    {
+        onTunneling = null;
     }
 
 }
