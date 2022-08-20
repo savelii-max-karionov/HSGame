@@ -13,6 +13,7 @@ public class InteractComponent : MonoBehaviour
 
     private Camera cam;
     private PlayerComponent playerComponent;
+    private PlayerMovement movementComponent;
     private bool isTransporting = false;
     private TunnelingObject tunnelingObject;
     private PhotonView photonView;
@@ -87,6 +88,7 @@ public class InteractComponent : MonoBehaviour
 
                 // appear
                 visualObject.SetActive(true);
+                movementComponent.enabled = true;
                 
                 Transform outputPointObj = tunnelingObject.output.transform.Find("Output Point");
                 if(outputPointObj != null)
@@ -158,6 +160,12 @@ public class InteractComponent : MonoBehaviour
         visualObject.SetActive(false);
 
         // movement of invisible player object
+        movementComponent = mainObject.GetComponent<PlayerMovement>();
+        if (!movementComponent)
+        {
+            Debug.LogError("Unable to disable movement of the player when tunneling.");
+        }
+        movementComponent.enabled = false;
         isTransporting = true;
         this.tunnelingObject = tunnelingObject;
         timeElaspedForTunneling = 0;
