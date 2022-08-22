@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ItemBarUI : MonoBehaviour
+public class ItemBarUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public GameObject Slots;
     public Sprite defaultSlotImage;
@@ -12,7 +12,7 @@ public class ItemBarUI : MonoBehaviour
     EscapeeComponent escapee;
     InventoryManager inventoryManager;
     List<GadgetUIComponent> gadgetUIComponents;
-
+    bool isPointerOverItemBar = false;
 
 
     private void Start()
@@ -75,7 +75,7 @@ public class ItemBarUI : MonoBehaviour
     }
     void Update()
     {
-        if (EventSystem.current.IsPointerOverGameObject())
+        if (isPointerOverItemBar)
         {
             animator.SetBool("isOpen", true);
         }
@@ -124,4 +124,13 @@ public class ItemBarUI : MonoBehaviour
         }
     }
 
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        isPointerOverItemBar = true;
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        isPointerOverItemBar= false;
+    }
 }
