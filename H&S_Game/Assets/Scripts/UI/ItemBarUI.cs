@@ -22,6 +22,7 @@ public class ItemBarUI : MonoBehaviour
         animator = GetComponent<Animator>();
         foreach (var i in GameStatistics.playerList)
         {
+            // TODO: use GameStastatics
             var photonView = i.GetComponent<Photon.Pun.PhotonView>();
             if (photonView && photonView.IsMine)
             {
@@ -83,6 +84,8 @@ public class ItemBarUI : MonoBehaviour
             animator.SetBool("isOpen", false);
         }
     }
+
+    
 
     /// <summary>
     /// Refresh the Item Bar UI according to the gadgets in the Inve3ntory Manager.
