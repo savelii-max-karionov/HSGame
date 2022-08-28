@@ -18,6 +18,9 @@ public class DeployerFactory
             case SkillData.SelectorType.Point:
                 targetSelector = new PointSelector();
                 break;
+            case SkillData.SelectorType.Self:
+                targetSelector = new SelfSelector();
+                break;
         }
         return targetSelector;
     }

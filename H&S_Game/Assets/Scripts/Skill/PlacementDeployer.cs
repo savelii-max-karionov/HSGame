@@ -11,7 +11,7 @@ public class PlacementDeployer : Deployer
         this.prefab = prefab;
     }
 
-    public override void Deploy(GameObject producer)
+    public override void execute(GameObject producer)
     {
         Debug.Log("test OkacenebtDeployer");
     }

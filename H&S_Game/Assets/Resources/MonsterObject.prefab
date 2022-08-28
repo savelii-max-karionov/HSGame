@@ -183,6 +183,7 @@ GameObject:
   - component: {fileID: -4822470422689397480}
   - component: {fileID: 4464528958949715789}
   - component: {fileID: -7097975885782849671}
+  - component: {fileID: -8083461689444782066}
   m_Layer: 2
   m_Name: MonsterObject
   m_TagString: Monster
@@ -337,6 +338,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11f3d79372d4d244187b3c4c14625a99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-8083461689444782066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6408186427961019076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0e84f57f3a5ae8438de5aed4af79356, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillDataList:
+  - {fileID: 11400000, guid: aa0abd4b57e0df94694ab2d169791d38, type: 2}
+  - {fileID: 11400000, guid: 995267f6d14b18c4b98d013b40ce65e7, type: 2}
+  maxSkillNum: 2
 --- !u!1 &7949584654672181359
 GameObject:
   m_ObjectHideFlags: 0

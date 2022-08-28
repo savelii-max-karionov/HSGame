@@ -289,6 +289,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillDataList:
   - {fileID: 11400000, guid: 995267f6d14b18c4b98d013b40ce65e7, type: 2}
+  - {fileID: 11400000, guid: aa0abd4b57e0df94694ab2d169791d38, type: 2}
   maxSkillNum: 1
 --- !u!1 &7949584654672181359
 GameObject:

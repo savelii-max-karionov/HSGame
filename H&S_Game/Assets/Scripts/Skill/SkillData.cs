@@ -19,6 +19,7 @@ public class SkillData : ScriptableObject
     {
         Circle,
         Point,
+        Self,
         None,
     }
 
@@ -56,13 +57,3 @@ public class SkillData : ScriptableObject
 }
 
 
-[CustomEditor(typeof(SkillData))]
-public class SkillDataEditor:Editor
-{
-    public override void OnInspectorGUI()
-    {
-        base.OnInspectorGUI();
-
-        
-    }
-}
