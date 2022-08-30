@@ -3,8 +3,6 @@ using UnityEngine;
 public class HidingObject : OpenableObject
 {
     public bool needOpen = false;
-    [SerializeField] private BoxCollider2D hideCollider;
-    [SerializeField] private GameObject playerVisual;
     //[SerializeField] private Animator animator;
     protected float mouseHoldTime = 0f;
     protected const float holdThreshold = 2f;

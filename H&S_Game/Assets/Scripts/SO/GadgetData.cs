@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public abstract class Gadget : ScriptableObject
+public abstract class GadgetData : ScriptableObject
 {
     public new string name;
     public string id;

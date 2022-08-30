@@ -25,7 +25,7 @@ public class InventoryManager
     /// Add gadget to the slot with minimum index.
     /// </summary>
     /// <param name="gadget"></param>
-    public void addGadget(Gadget gadget, GameObject gadgetGameObj, int num)
+    public void addGadget(GadgetData gadget, GameObject gadgetGameObj, int num)
     {
         for (int i = 0; i < inventorySize; i++)
         {

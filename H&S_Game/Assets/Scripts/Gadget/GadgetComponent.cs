@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class GadgetComponent : MonoBehaviour
 {
-    public Gadget gadget;
+    public GadgetData gadget;
     ItemBarUI itemBar;
     PhotonView photonview;
     // Start is called before the first frame update

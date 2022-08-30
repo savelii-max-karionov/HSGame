@@ -1,5 +1,5 @@
 ﻿public class GadgetStack
 {
-    public Gadget gadget;
+    public GadgetData gadget;
     public int num;
 }

@@ -3,7 +3,7 @@ using UnityEngine;
 
 
 [CreateAssetMenu(menuName = "Inventory/RestoreGadget", fileName = "new file")]
-public class RestoreGadget : Gadget
+public class RestoreGadget : GadgetData
 {
     public float restoreAmount;
 

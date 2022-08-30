@@ -13,7 +13,7 @@ public class Slot
         stack = new GadgetStack();
     }
 
-    public void setGadgetStack(Gadget gadget, int num)
+    public void setGadgetStack(GadgetData gadget, int num)
     {
         isEmpty = false;
         stack.gadget = gadget;
@@ -39,7 +39,7 @@ public class Slot
         return ret;
     }
 
-    public Gadget removeGadget(int num)
+    public GadgetData removeGadget(int num)
     {
         stack.num -= num;
         if (stack.num == 0)
