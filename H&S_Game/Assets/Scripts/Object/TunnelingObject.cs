@@ -8,8 +8,9 @@ public class TunnelingObject : InteractableObject
     public GameObject input;
     public GameObject output;
     public float transportTime;
-    GameObject playerObject;
-    Animator playerAnimator;
+    protected bool disableVisualWhileTunneling;
+    protected GameObject playerObject;
+    protected Animator playerAnimator;
 
     private void OnEnable()
     {
@@ -21,7 +22,7 @@ public class TunnelingObject : InteractableObject
         //    return;
         //}
 
-
+        disableVisualWhileTunneling = true;
 
     }
 
@@ -77,7 +78,19 @@ public class TunnelingObject : InteractableObject
 
     protected override void invokeTunnelingEvent()
     {
-        onTunneling?.Invoke(this);
+        preTunneling();
+        onTunneling?.Invoke(this,disableVisualWhileTunneling);
+        postInvokeTunneling();
+    }
+
+    protected virtual void preTunneling()
+    {
+
+    }
+
+    protected virtual void postInvokeTunneling()
+    {
+
     }
 
 }

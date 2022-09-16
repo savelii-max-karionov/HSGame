@@ -13,12 +13,14 @@ public class PlayerMovement : MonoBehaviour
     private float horizontalRawAxis;
     private float verticalRawAxis;
     private bool m_FacingRight;
+    private bool isClimbing;
     public int curLevel = 0;
 
     // Start is called before the first frame update
     void Start()
     {
         m_FacingRight = false;
+        isClimbing = false;
     }
 
     private void OnEnable()
@@ -51,8 +53,10 @@ public class PlayerMovement : MonoBehaviour
 
         horizontalMovementVector = getHorizontalMoveVec(horizontalMovementVector);
 
-        verticalMovementVector = getVerticalMoveVec(verticalMovementVector);
-
+        if (!isClimbing)
+        {
+            verticalMovementVector = getVerticalMoveVec(verticalMovementVector);
+        }
         rb.MovePosition(rb.position + horizontalMovementVector + verticalMovementVector);
     }
 
@@ -111,5 +115,10 @@ public class PlayerMovement : MonoBehaviour
         Vector3 theScale = transform.localScale;
         theScale.x *= -1;
         transform.localScale = theScale;
+    }
+
+    public void changeClimbingState(bool climbingState)
+    {
+        isClimbing = climbingState;
     }
 }

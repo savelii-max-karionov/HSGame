@@ -7,7 +7,7 @@ public abstract class InteractableObject : MonoBehaviour
     public Action onOpen;
     public Action OnHiden;
     public Action onAppear;
-    public Action<TunnelingObject> onTunneling;
+    public Action<TunnelingObject, bool> onTunneling;
     // Start is called before the first frame update
     void Start()
     {
@@ -35,12 +35,12 @@ public abstract class InteractableObject : MonoBehaviour
         OnHiden -= action;
     }
 
-    public void registerTunnelingEvent(Action<TunnelingObject> action)
+    public void registerTunnelingEvent(Action<TunnelingObject, bool> action)
     {
         onTunneling += action;
     }
 
-    public void deregisterTunnelingEvent(Action<TunnelingObject> action)
+    public void deregisterTunnelingEvent(Action<TunnelingObject, bool> action)
     {
         onTunneling -= action;
     }

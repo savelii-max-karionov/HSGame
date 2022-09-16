@@ -1,4 +1,5 @@
 using Photon.Pun;
+using System;
 using UnityEngine;
 
 public class InteractComponent : MonoBehaviour
@@ -7,6 +8,7 @@ public class InteractComponent : MonoBehaviour
     public Collider2D interactCollider;
     public GameObject visualObject;
     public GameObject mainObject;
+    public event Action OnTransportEnd;
 
     private float timeElaspedForTunneling;
 
@@ -17,6 +19,7 @@ public class InteractComponent : MonoBehaviour
     private bool isTransporting = false;
     private TunnelingObject tunnelingObject;
     private PhotonView photonView;
+    
 
     private void Awake()
     {
@@ -104,6 +107,9 @@ public class InteractComponent : MonoBehaviour
                 // TODO
 
                 Debug.Log("End tunnelling");
+                var movement = mainObject.GetComponent<PlayerMovement>();
+                OnTransportEnd?.Invoke();
+
             }
         }
     }
@@ -149,7 +155,7 @@ public class InteractComponent : MonoBehaviour
     /// <summary>
     /// what the player behave when it's entering a vent.
     /// </summary>
-    public void tunneling(TunnelingObject tunnelingObject)
+    public void tunneling(TunnelingObject tunnelingObject, bool disableVisual)
     {
         Debug.Log("tunneling");
 
@@ -157,7 +163,10 @@ public class InteractComponent : MonoBehaviour
         // TODO
 
         // disappear
-        visualObject.SetActive(false);
+        if (disableVisual)
+        {
+            visualObject.SetActive(false);
+        }
 
         // movement of invisible player object
         movementComponent = mainObject.GetComponent<PlayerMovement>();
