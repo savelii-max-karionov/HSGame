@@ -20,7 +20,9 @@ public abstract class InteractableObject : MonoBehaviour
 
     }
 
-    public abstract void onMouseDown();
+    public abstract void onMouseDown(EscapeeInteractComponent escapeeInteractComponent);
+
+    public abstract void onMouseDown(MonsterInteractComponent monsterInteractComponent);
 
     public abstract void onMouseDrag();
 

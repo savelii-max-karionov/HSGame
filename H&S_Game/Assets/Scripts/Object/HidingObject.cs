@@ -11,17 +11,21 @@ public class HidingObject : OpenableObject
 
 
 
-    public override void onMouseDown()
+    public override void onMouseDown(EscapeeInteractComponent escapeeInteractComponent)
     {
-        if (needOpen && mouseHoldTime < holdThreshold)
+        if (escapeeInteractComponent.CanOpen)
         {
-            isOpen = !isOpen;
-            onOpen?.Invoke();
-            Debug.Log(gameObject.name + ", open state: " + isOpen);
+            if (needOpen && mouseHoldTime < holdThreshold)
+            {
+                isOpen = !isOpen;
+                onOpen?.Invoke();
+                Debug.Log(gameObject.name + ", open state: " + isOpen);
+            }
+            hasChangedHidenState = false;
+            mouseHoldTime = 0f;
         }
-        hasChangedHidenState = false;
-        mouseHoldTime = 0f;
     }
+
     public override void onMouseDrag()
     {
         mouseHoldTime += Time.deltaTime;

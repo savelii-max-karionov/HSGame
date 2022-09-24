@@ -2,7 +2,7 @@ using Photon.Pun;
 using System;
 using UnityEngine;
 
-public class InteractComponent : MonoBehaviour
+public abstract class InteractComponent : MonoBehaviour
 {
 
     public Collider2D interactCollider;
@@ -31,6 +31,7 @@ public class InteractComponent : MonoBehaviour
             Debug.Log("PhotonView not found");
         }
     }
+
     private void Update()
     {
         HandleTransporting();
@@ -44,22 +45,11 @@ public class InteractComponent : MonoBehaviour
             if (rayHit.transform != null)
             {
                 var hitObject = rayHit.transform.gameObject;
-                var interactObj = hitObject.GetComponent<InteractableObject>();
-                var gadget = hitObject.GetComponent<GadgetComponent>();
-                if (interactObj != null)
-                {
-                    // Describe how the character behave during the interaction.
-                    interactObj.registerHidingEvent(hide);
-                    interactObj.registerAppearingEvent(unhide);
-                    interactObj.registerTunnelingEvent(tunneling);
 
-                    interactObj.onMouseDown();
-                }
-                else if (gadget != null)
-                {
-                    gadget.OnClicked();
-                }
 
+                var escapee = hitObject.GetComponent<EscapeeComponent>();
+
+                OnInteract(hitObject, escapee);
             }
         }
         // If the player is holding the click and there is an interactable object within rnage.
@@ -76,6 +66,8 @@ public class InteractComponent : MonoBehaviour
             }
         }
     }
+
+    protected abstract void OnInteract(GameObject hitObject, EscapeeComponent escapee);
 
     private void HandleTransporting()
     {

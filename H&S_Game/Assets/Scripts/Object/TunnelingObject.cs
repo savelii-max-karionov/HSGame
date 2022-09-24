@@ -48,13 +48,16 @@ public class TunnelingObject : InteractableObject
         return foundPlayer;
     }
 
-    public override void onMouseDown()
+    public override void onMouseDown(EscapeeInteractComponent escapeeInteractComponent)
     {
-        findPlayer();
+        if (escapeeInteractComponent.CanTunneling)
+        {
+            findPlayer();
 
-        findAnimator();
+            findAnimator();
 
-        invokeTunnelingEvent();
+            invokeTunnelingEvent();
+        }
     }
 
     private bool findAnimator()
@@ -93,4 +96,8 @@ public class TunnelingObject : InteractableObject
 
     }
 
+    public override void onMouseDown(MonsterInteractComponent monsterInteractComponent)
+    {
+        throw new System.NotImplementedException();
+    }
 }
