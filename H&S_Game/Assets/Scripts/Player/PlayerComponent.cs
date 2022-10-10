@@ -18,11 +18,9 @@ public class PlayerComponent : MonoBehaviour
         }
     }
 
-    // Start is called before the first frame update
-    protected void Awake()
+    protected void OnEnable()
     {
         GameStatistics.playerList.Add(gameObject);
-
     }
 
     // Update is called once per frame
@@ -31,7 +29,7 @@ public class PlayerComponent : MonoBehaviour
 
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
         GameStatistics.playerList.Remove(gameObject);
     }

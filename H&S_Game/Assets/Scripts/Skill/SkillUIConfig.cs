@@ -21,6 +21,11 @@ public class SkillUIConfig : MonoBehaviour
 
         skillManager = controlledPlayer.GetComponent<SkillManager>();
 
+        if(skillManager == null)
+        {
+            return;
+        }
+
         buttons = GetComponentsInChildren<Button>();
 
         for (int i = 0; i < buttons.Length; i++)

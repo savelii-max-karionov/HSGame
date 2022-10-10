@@ -1,3 +1,5 @@
+using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,9 +24,16 @@ public class EscapeeInteractComponent : InteractComponent
     private void Start()
     {
         if(playerMovement == null) Debug.Assert(playerMovement,"playerMovement not found");
+        PhotonNetwork.AddCallbackTarget(this);
     }
 
-    protected override void OnInteract(GameObject hitObject, EscapeeComponent escapee)
+    private void OnDestroy()
+    {
+        PhotonNetwork.RemoveCallbackTarget(this);
+    }
+
+
+    protected override void OnInteract(GameObject hitObject)
     {
         var interactObj = hitObject.GetComponent<InteractableObject>();
         var gadget = hitObject.GetComponent<GadgetComponent>();
@@ -43,13 +52,25 @@ public class EscapeeInteractComponent : InteractComponent
         }
     }
 
+    [PunRPC]
+    public void onInteractBegin(int viewId)
+    {
+        var escapeeRegidBody = mainObject.GetComponent<Rigidbody2D>();
+        if (escapeeRegidBody)
+        {
+            escapeeRegidBody.simulated = false;
+        }
+        var targetParentView = PhotonView.Find(viewId);
+
+        mainObject.transform.SetParent(targetParentView.GetComponent<MonsterInteractComponent>().InteractAnchor.transform);
+        mainObject.transform.localPosition = new Vector3(0, 0, 0);
+        visualObject.GetComponent<SpriteRenderer>().sortingOrder = 2;
+    }
+
+    [PunRPC]
     public void OnBeingInteractedByMonster()
     {
-        Debug.Log("I am captured by the monster");
-
         disableAbilityWhileCaptured();
-
-
     }
 
     private void disableAbilityWhileCaptured()
@@ -57,5 +78,46 @@ public class EscapeeInteractComponent : InteractComponent
         canGrab = false;
         canOpen = false;
         canHide = false;
+    }
+
+    [PunRPC]
+    public void onBeingExecutedProcessBegin()
+    {
+        // animation
+        if (visualObject != null)
+        {
+            var spriteRenderer = visualObject.GetComponent<SpriteRenderer>();
+            spriteRenderer.color = new Color(255f, 0f, 0f);
+        }
+    }
+
+    [PunRPC]
+    public void OnBeingkilledByMonster()
+    {
+        if (PhotonView.Get(this).IsMine)
+        {
+            // Killed animation, turn to spectator
+            PhotonNetwork.Instantiate("Spectator", mainObject.transform.position, Quaternion.identity);
+
+            PhotonNetwork.Destroy(gameObject);
+        }
+    }
+
+    [PunRPC]
+    public void onBeingReleasedFromExecuting(Vector3 releasePositon)
+    {
+        // TODO: Animation
+        if(visualObject != null)
+        {
+            var escapeeRegidBody = mainObject.GetComponent<Rigidbody2D>();
+            if (escapeeRegidBody)
+            {
+                escapeeRegidBody.simulated = true;
+            }
+            mainObject.transform.SetParent(null);
+            mainObject.transform.position = releasePositon;
+        }
+        Debug.Log("I am saved from being killed");
+        visualObject.GetComponent<SpriteRenderer>().sortingOrder = 0;
     }
 }

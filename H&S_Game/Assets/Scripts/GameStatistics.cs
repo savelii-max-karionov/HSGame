@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class GameStatistics : MonoBehaviour
 {
+    // As long as the gameobject has a PlayerComponent, it is added into the playerList
     public static List<GameObject> playerList = new List<GameObject>();
 
     public static GameObject findControledPlayer()

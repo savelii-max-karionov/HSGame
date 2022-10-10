@@ -13,18 +13,12 @@ public class CameraFollow : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        var players = FindObjectsOfType<PlayerMovement>();
-        foreach (PlayerMovement player in players)
-        {
-            if (player.GetComponent<PhotonView>() != null)
-            {
-                var photonView = player.GetComponent<PhotonView>();
-                if (photonView.IsMine)
-                {
-                    playerTransform = player.transform;
-                }
-            }
-        }
+
+    }
+
+    private void updateControledPlayerTransform()
+    {
+        playerTransform = GameStatistics.findControledPlayer()?.transform;
 
         if (playerTransform == null)
         {
@@ -32,10 +26,12 @@ public class CameraFollow : MonoBehaviour
         }
     }
 
-
     private void FixedUpdate()
     {
+        updateControledPlayerTransform();
+
         var playerComponent = playerTransform?.GetComponent<PlayerComponent>();
+
         if (Input.GetKey(KeyCode.LeftShift))
         {
             Vector3 movVec = new Vector3(Input.GetAxis("Horizontal"), 0, 0);

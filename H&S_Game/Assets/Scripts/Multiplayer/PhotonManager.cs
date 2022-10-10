@@ -10,6 +10,12 @@ public class PhotonManager : MonoBehaviourPun
         if (GameStatus.IsMonster)
         {
             PhotonNetwork.Instantiate("MonsterObject", new Vector3(0, 0, 0), Quaternion.identity);
+
+            //For testing
+            var test1 = PhotonNetwork.Instantiate("PlayerObject", new Vector3(-5, 0, 0), Quaternion.identity);
+            var test2 = PhotonNetwork.Instantiate("PlayerObject", new Vector3(-10, 0, 0), Quaternion.identity);
+            test1.GetComponent<PlayerMovement>().enabled = false;
+            test2.GetComponent<PlayerMovement>().enabled = false;
         }
         else if (!GameStatus.IsMonster)
         {

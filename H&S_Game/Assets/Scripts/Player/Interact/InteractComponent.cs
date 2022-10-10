@@ -9,6 +9,7 @@ public abstract class InteractComponent : MonoBehaviour
     public GameObject visualObject;
     public GameObject mainObject;
     public event Action OnTransportEnd;
+    protected Animator animator;
 
     private float timeElaspedForTunneling;
 
@@ -30,6 +31,7 @@ public abstract class InteractComponent : MonoBehaviour
         {
             Debug.Log("PhotonView not found");
         }
+        animator = visualObject.GetComponent<Animator>();
     }
 
     private void Update()
@@ -46,10 +48,7 @@ public abstract class InteractComponent : MonoBehaviour
             {
                 var hitObject = rayHit.transform.gameObject;
 
-
-                var escapee = hitObject.GetComponent<EscapeeComponent>();
-
-                OnInteract(hitObject, escapee);
+                OnInteract(hitObject);
             }
         }
         // If the player is holding the click and there is an interactable object within rnage.
@@ -67,7 +66,7 @@ public abstract class InteractComponent : MonoBehaviour
         }
     }
 
-    protected abstract void OnInteract(GameObject hitObject, EscapeeComponent escapee);
+    protected abstract void OnInteract(GameObject hitObject);
 
     private void HandleTransporting()
     {
@@ -110,6 +109,7 @@ public abstract class InteractComponent : MonoBehaviour
     {
         visualObject?.SetActive(false);
         var movementComponent = mainObject?.GetComponent<PlayerMovement>();
+
         if (movementComponent != null)
         {
             movementComponent.enabled = false;
