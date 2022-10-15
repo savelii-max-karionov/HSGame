@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerComponent : MonoBehaviour
 {
+    public GameObject visualObject;
     private bool isHiding = false;
     private string id;
 
@@ -21,12 +22,6 @@ public class PlayerComponent : MonoBehaviour
     protected void OnEnable()
     {
         GameStatistics.playerList.Add(gameObject);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     private void OnDisable()

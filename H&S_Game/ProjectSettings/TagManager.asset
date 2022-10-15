@@ -9,6 +9,7 @@ TagManager:
   - Gadget
   - GadgetSlot
   - Spectator
+  - Escapee
   layers:
   - Default
   - TransparentFX

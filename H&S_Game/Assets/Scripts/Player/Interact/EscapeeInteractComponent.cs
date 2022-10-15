@@ -96,10 +96,11 @@ public class EscapeeInteractComponent : InteractComponent
     {
         if (PhotonView.Get(this).IsMine)
         {
+            PhotonNetwork.Destroy(gameObject);
             // Killed animation, turn to spectator
             PhotonNetwork.Instantiate("Spectator", mainObject.transform.position, Quaternion.identity);
 
-            PhotonNetwork.Destroy(gameObject);
+            
         }
     }
 

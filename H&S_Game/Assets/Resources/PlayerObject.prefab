@@ -179,7 +179,7 @@ GameObject:
   - component: {fileID: 1470615564941037669}
   m_Layer: 2
   m_Name: PlayerObject
-  m_TagString: Player
+  m_TagString: Escapee
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -333,6 +333,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9aadbaea3b233f409290cbc68d91dcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  visualObject: {fileID: 6408186427571396921}
   itemBarUI: {fileID: 0}
 --- !u!114 &4097672337438214864
 MonoBehaviour:

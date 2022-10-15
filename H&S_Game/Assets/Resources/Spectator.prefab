@@ -173,11 +173,11 @@ GameObject:
   - component: {fileID: 6228505336790592177}
   - component: {fileID: 5767795455100185314}
   - component: {fileID: -4822470422689397480}
-  - component: {fileID: 6589604096858179311}
   - component: {fileID: 4097672337438214864}
+  - component: {fileID: 9211334440446351182}
   m_Layer: 2
   m_Name: Spectator
-  m_TagString: Player
+  m_TagString: Spectator
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -292,19 +292,6 @@ MonoBehaviour:
   m_SynchronizeAngularVelocity: 0
   m_TeleportEnabled: 0
   m_TeleportIfDistanceGreaterThan: 3
---- !u!114 &6589604096858179311
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6408186427961019076}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9aadbaea3b233f409290cbc68d91dcc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemBarUI: {fileID: 0}
 --- !u!114 &4097672337438214864
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -321,6 +308,19 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 995267f6d14b18c4b98d013b40ce65e7, type: 2}
   - {fileID: 11400000, guid: aa0abd4b57e0df94694ab2d169791d38, type: 2}
   maxSkillNum: 1
+--- !u!114 &9211334440446351182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6408186427961019076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a86af3ce4d3749848b5d2bf1d6d389b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  visualObject: {fileID: 6408186427571396921}
 --- !u!1 &7949584654672181359
 GameObject:
   m_ObjectHideFlags: 0

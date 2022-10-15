@@ -4,15 +4,26 @@ using UnityEngine;
 
 public class SpectatorComponent : PlayerComponent
 {
-    // Start is called before the first frame update
-    void Start()
+    private new void OnEnable()
     {
-        
-    }
+        base.OnEnable();
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        // TODO: use a scriptable object to config visibility.
+        var controledPlayer = GameStatistics.findControledPlayer();
+
+        if (controledPlayer)
+        {
+            if (controledPlayer.CompareTag("Spectator"))
+            {
+                visualObject.SetActive(true);
+                //GameStatistics.onlyEnableVisualOfTags(new List<string>{"Spectator"});
+            }
+            else
+            {
+                visualObject.SetActive(false);
+            }
+        }
+
+
     }
 }
