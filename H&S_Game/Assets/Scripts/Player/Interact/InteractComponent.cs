@@ -1,5 +1,7 @@
 using Photon.Pun;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class InteractComponent : MonoBehaviour
@@ -150,28 +152,38 @@ public abstract class InteractComponent : MonoBehaviour
     public void tunneling(TunnelingObject tunnelingObject, bool disableVisual)
     {
         Debug.Log("tunneling");
-
+        movementComponent = mainObject.GetComponent<PlayerMovement>();
+        movementComponent.IsHopping = true;
+        animator.SetBool("IsHopping", true);
+        StartCoroutine("resetBool");
+        
         // Trigger entering event
         // TODO
 
-        // disappear
-        if (disableVisual)
-        {
-            visualObject.SetActive(false);
-        }
+        //// disappear
+        //if (disableVisual)
+        //{
+        //    visualObject.SetActive(false);
+        //}
 
-        // movement of invisible player object
-        movementComponent = mainObject.GetComponent<PlayerMovement>();
-        if (!movementComponent)
-        {
-            Debug.LogError("Unable to disable movement of the player when tunneling.");
-        }
-        movementComponent.enabled = false;
-        isTransporting = true;
-        this.tunnelingObject = tunnelingObject;
-        timeElaspedForTunneling = 0;
+        //// movement of invisible player object
+        //movementComponent = mainObject.GetComponent<PlayerMovement>();
+        //if (!movementComponent)
+        //{
+        //    Debug.LogError("Unable to disable movement of the player when tunneling.");
+        //}
+        //movementComponent.enabled = false;
+        //isTransporting = true;
+        //this.tunnelingObject = tunnelingObject;
+        //timeElaspedForTunneling = 0;
 
-        // appear after timeElasped has passed the required transporting time. It will be implemented in the Update.
+        //// appear after timeElasped has passed the required transporting time. It will be implemented in the Update.
 
+    }
+
+    IEnumerator resetBool()
+    {
+        yield return new WaitForSeconds(1.0f);
+        animator.SetBool("IsHopping", false);
     }
 }

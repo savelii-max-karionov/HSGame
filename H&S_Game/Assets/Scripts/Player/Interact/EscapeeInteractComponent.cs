@@ -80,6 +80,13 @@ public class EscapeeInteractComponent : InteractComponent
         canHide = false;
     }
 
+    public void onHopping()
+    {
+        canGrab = false;
+        canOpen = false;
+        canHide = false;
+    }
+
     [PunRPC]
     public void onBeingExecutedProcessBegin()
     {
