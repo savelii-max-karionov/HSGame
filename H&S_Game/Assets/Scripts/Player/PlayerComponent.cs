@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerComponent : MonoBehaviour
 {
+    public GameObject visualObject;
     private bool isHiding = false;
     private string id;
 
@@ -18,20 +19,12 @@ public class PlayerComponent : MonoBehaviour
         }
     }
 
-    // Start is called before the first frame update
-    protected void Awake()
+    protected void OnEnable()
     {
         GameStatistics.playerList.Add(gameObject);
-
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    private void OnDestroy()
+    private void OnDisable()
     {
         GameStatistics.playerList.Remove(gameObject);
     }

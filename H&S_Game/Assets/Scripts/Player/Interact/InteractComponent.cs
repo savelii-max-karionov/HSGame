@@ -1,5 +1,7 @@
 using Photon.Pun;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class InteractComponent : MonoBehaviour
@@ -9,6 +11,7 @@ public abstract class InteractComponent : MonoBehaviour
     public GameObject visualObject;
     public GameObject mainObject;
     public event Action OnTransportEnd;
+    protected Animator animator;
 
     private float timeElaspedForTunneling;
 
@@ -30,6 +33,7 @@ public abstract class InteractComponent : MonoBehaviour
         {
             Debug.Log("PhotonView not found");
         }
+        animator = visualObject.GetComponent<Animator>();
     }
 
     private void Update()
@@ -46,14 +50,11 @@ public abstract class InteractComponent : MonoBehaviour
             {
                 var hitObject = rayHit.transform.gameObject;
 
-
-                var escapee = hitObject.GetComponent<EscapeeComponent>();
-
-                OnInteract(hitObject, escapee);
+                OnInteract(hitObject);
             }
         }
         // If the player is holding the click and there is an interactable object within rnage.
-        else if (Input.GetMouseButton(0) && interactCollider.OverlapPoint(cam.ScreenToWorldPoint(Input.mousePosition)) && mainObject.tag == "Player")
+        else if (Input.GetMouseButton(0) && interactCollider.OverlapPoint(cam.ScreenToWorldPoint(Input.mousePosition)) && mainObject.tag == "Escapee")
         {
             RaycastHit2D rayHit = Physics2D.GetRayIntersection(Camera.main.ScreenPointToRay(Input.mousePosition));
             if (rayHit.transform != null)
@@ -67,7 +68,7 @@ public abstract class InteractComponent : MonoBehaviour
         }
     }
 
-    protected abstract void OnInteract(GameObject hitObject, EscapeeComponent escapee);
+    protected abstract void OnInteract(GameObject hitObject);
 
     private void HandleTransporting()
     {
@@ -110,6 +111,7 @@ public abstract class InteractComponent : MonoBehaviour
     {
         visualObject?.SetActive(false);
         var movementComponent = mainObject?.GetComponent<PlayerMovement>();
+
         if (movementComponent != null)
         {
             movementComponent.enabled = false;
@@ -150,28 +152,38 @@ public abstract class InteractComponent : MonoBehaviour
     public void tunneling(TunnelingObject tunnelingObject, bool disableVisual)
     {
         Debug.Log("tunneling");
-
+        movementComponent = mainObject.GetComponent<PlayerMovement>();
+        movementComponent.IsHopping = true;
+        animator.SetBool("IsHopping", true);
+        StartCoroutine("resetBool");
+        
         // Trigger entering event
         // TODO
 
-        // disappear
-        if (disableVisual)
-        {
-            visualObject.SetActive(false);
-        }
+        //// disappear
+        //if (disableVisual)
+        //{
+        //    visualObject.SetActive(false);
+        //}
 
-        // movement of invisible player object
-        movementComponent = mainObject.GetComponent<PlayerMovement>();
-        if (!movementComponent)
-        {
-            Debug.LogError("Unable to disable movement of the player when tunneling.");
-        }
-        movementComponent.enabled = false;
-        isTransporting = true;
-        this.tunnelingObject = tunnelingObject;
-        timeElaspedForTunneling = 0;
+        //// movement of invisible player object
+        //movementComponent = mainObject.GetComponent<PlayerMovement>();
+        //if (!movementComponent)
+        //{
+        //    Debug.LogError("Unable to disable movement of the player when tunneling.");
+        //}
+        //movementComponent.enabled = false;
+        //isTransporting = true;
+        //this.tunnelingObject = tunnelingObject;
+        //timeElaspedForTunneling = 0;
 
-        // appear after timeElasped has passed the required transporting time. It will be implemented in the Update.
+        //// appear after timeElasped has passed the required transporting time. It will be implemented in the Update.
 
+    }
+
+    IEnumerator resetBool()
+    {
+        yield return new WaitForSeconds(1.0f);
+        animator.SetBool("IsHopping", false);
     }
 }

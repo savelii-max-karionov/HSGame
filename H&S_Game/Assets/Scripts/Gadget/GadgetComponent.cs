@@ -23,18 +23,11 @@ public class GadgetComponent : MonoBehaviour
 
     public void OnClicked()
     {
-        foreach (var i in GameStatistics.playerList)
+        var escapeeComponent = GameStatistics.findControledPlayer().GetComponent<EscapeeComponent>();
+        if (escapeeComponent != null)
         {
-            var photonView = i.GetComponent<Photon.Pun.PhotonView>();
-            if (photonView && photonView.IsMine)
-            {
-                var escapeeComponent = i.GetComponent<EscapeeComponent>();
-                if (escapeeComponent != null)
-                {
-                    escapeeComponent.inventoryManager.addGadget(gadget, gameObject, 1);
-                    photonview.RPC("disappear", RpcTarget.All);
-                }
-            }
+            escapeeComponent.inventoryManager.addGadget(gadget, gameObject, 1);
+            photonview.RPC("disappear", RpcTarget.All);
         }
     }
 

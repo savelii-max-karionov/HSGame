@@ -8,6 +8,8 @@ TagManager:
   - Monster
   - Gadget
   - GadgetSlot
+  - Spectator
+  - Escapee
   layers:
   - Default
   - TransparentFX

@@ -1,8 +1,8 @@
 public class MonsterComponent : PlayerComponent
 {
-    private new void Awake()
+    private void Awake()
     {
-        base.Awake();
+
     }
 
     // Start is called before the first frame update
