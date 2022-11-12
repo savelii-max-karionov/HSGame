@@ -122,8 +122,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5393a96b76ba699489a9ce74a9dbfc27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainObject: {fileID: 8035880758037178257}
   input: {fileID: 8035880758037178257}
-  output: {fileID: 0}
+  output: {fileID: 8035880758037178257}
   transportTime: 5
   isClimbingUp: 1
 --- !u!1 &7612938827741258797

@@ -3,11 +3,12 @@ using UnityEngine;
 
 public abstract class InteractableObject : MonoBehaviour
 {
+    public GameObject mainObject;
+    public Action onInteract;
 
-    public Action onOpen;
-    public Action OnHiden;
-    public Action onAppear;
-    public Action<TunnelingObject, bool> onTunneling;
+    public Action onDragBegin;
+    public Action onDragEnd;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,68 +21,34 @@ public abstract class InteractableObject : MonoBehaviour
 
     }
 
-    public abstract void onMouseDown(EscapeeInteractComponent escapeeInteractComponent);
+    public abstract void onBeingInteracted(EscapeeInteractComponent escapeeInteractComponent);
 
-    public abstract void onMouseDown(MonsterInteractComponent monsterInteractComponent);
+    public abstract void onBeingInteracted(MonsterInteractComponent monsterInteractComponent);
 
     public abstract void onMouseDrag();
 
-    public void registerHidingEvent(Action action)
+
+    public void registerInteractEvent(Action action)
     {
-        OnHiden += action;
+        onInteract += action;
     }
 
-
-    public void deregisterHidingEvent(Action action)
+    public void emptyInteractEvent()
     {
-        OnHiden -= action;
+        onInteract = null;
     }
+    
 
-    public void registerTunnelingEvent(Action<TunnelingObject, bool> action)
+    public void registerDragEvent(Action begin, Action end)
     {
-        onTunneling += action;
-    }
-
-    public void deregisterTunnelingEvent(Action<TunnelingObject, bool> action)
-    {
-        onTunneling -= action;
-    }
-    public void registerAppearingEvent(Action action)
-    {
-        onAppear += action;
+        onDragBegin += begin;
+        onDragEnd += end;
     }
 
-    public void deregisterAppearingEvent(Action action)
+    public void emptyDragEvent()
     {
-        onAppear -= action;
-    }
-
-    protected void invokeHiddingEvent()
-    {
-        OnHiden?.Invoke();
-    }
-
-    protected void invokeAppearingEvent()
-    {
-        onAppear?.Invoke();
-    }
-
-    protected virtual void invokeTunnelingEvent()
-    {
-
-    }
-
-    public void emptyHidingEvnet()
-    {
-        OnHiden = null;
-    }
-    public void emptyAppearingEvent()
-    {
-        onAppear = null;
-    }
-    public void emptyTunnelingEvent()
-    {
-        onTunneling = null;
+        onDragBegin = null;
+        onDragEnd = null;
     }
 
 }

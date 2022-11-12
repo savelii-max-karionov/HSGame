@@ -122,6 +122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3abe1c936eb1494f901892210da8d3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainObject: {fileID: 8035880758037178257}
   input: {fileID: 8035880758037178257}
   output: {fileID: 0}
   transportTime: 5
