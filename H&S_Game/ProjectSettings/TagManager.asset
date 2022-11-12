@@ -10,6 +10,10 @@ TagManager:
   - GadgetSlot
   - Spectator
   - Escapee
+  - ClimbPortal
+  - TransportPortal
+  - hideableObject
+  - OpenableObject
   layers:
   - Default
   - TransparentFX

@@ -125,6 +125,7 @@ MonoBehaviour:
   input: {fileID: 8035880758037178257}
   output: {fileID: 0}
   transportTime: 5
+  isClimbingUp: 0
 --- !u!1 &3686652223894147497
 GameObject:
   m_ObjectHideFlags: 0
@@ -167,7 +168,7 @@ GameObject:
   - component: {fileID: 2188967663251873914}
   m_Layer: 2
   m_Name: Fake Climb Portal Output
-  m_TagString: Untagged
+  m_TagString: ClimbPortal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
