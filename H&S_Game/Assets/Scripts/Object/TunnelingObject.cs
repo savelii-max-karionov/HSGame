@@ -14,16 +14,7 @@ public class TunnelingObject : InteractableObject
 
     private void OnEnable()
     {
-        // This component is enabled before players are joined, so we need to delay the initialization.
-        //bool foundPlayer = findPlayer();
-        //if (!foundPlayer)
-        //{
-        //    Debug.LogError("Cannot find the player in tunnel component");
-        //    return;
-        //}
-
         disableVisualWhileTunneling = true;
-
     }
 
     private bool findPlayer()
@@ -48,7 +39,7 @@ public class TunnelingObject : InteractableObject
         return foundPlayer;
     }
 
-    public override void onMouseDown(EscapeeInteractComponent escapeeInteractComponent)
+    public override void onBeingInteracted(EscapeeInteractComponent escapeeInteractComponent)
     {
         if (escapeeInteractComponent.CanTunneling)
         {
@@ -79,10 +70,10 @@ public class TunnelingObject : InteractableObject
         
     }
 
-    protected override void invokeTunnelingEvent()
+    private void invokeTunnelingEvent()
     {
         preTunneling();
-        onTunneling?.Invoke(this,disableVisualWhileTunneling);
+        onInteract?.Invoke();
         postInvokeTunneling();
     }
 
@@ -96,7 +87,7 @@ public class TunnelingObject : InteractableObject
         
     }
 
-    public override void onMouseDown(MonsterInteractComponent monsterInteractComponent)
+    public override void onBeingInteracted(MonsterInteractComponent monsterInteractComponent)
     {
         throw new System.NotImplementedException();
     }

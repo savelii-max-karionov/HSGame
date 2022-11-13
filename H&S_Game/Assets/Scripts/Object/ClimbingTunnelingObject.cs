@@ -31,7 +31,6 @@ public class ClimbingTunnelingObject : TunnelingObject
 
         if (!isClimbingUp)
         {
-            interactComponent.OnTransportEnd += handleTransportEnd;
         }
     }
     
@@ -47,6 +46,5 @@ public class ClimbingTunnelingObject : TunnelingObject
             movement.changeClimbingState(false);
         }
 
-        interactComponent.OnTransportEnd -= handleTransportEnd;
     }
 }

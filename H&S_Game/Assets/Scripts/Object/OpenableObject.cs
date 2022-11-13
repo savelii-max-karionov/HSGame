@@ -7,17 +7,17 @@ public class OpenableObject : InteractableObject
 
     protected bool isOpen = false;
 
-    public override void onMouseDown(EscapeeInteractComponent escapeeInteractComponent)
+    public override void onBeingInteracted(EscapeeInteractComponent escapeeInteractComponent)
     {
         if (escapeeInteractComponent.CanOpen)
         {
             isOpen = !isOpen;
-            onOpen?.Invoke();
+            onInteract?.Invoke();
             Debug.Log(gameObject.name + ", open state: " + isOpen);
         }
     }
 
-    public override void onMouseDown(MonsterInteractComponent monsterInteractComponent)
+    public override void onBeingInteracted(MonsterInteractComponent monsterInteractComponent)
     {
         throw new System.NotImplementedException();
     }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class HidingObject : OpenableObject
+public class HidingObject : InteractableObject
 {
     public bool needOpen = false;
     //[SerializeField] private Animator animator;
@@ -8,17 +8,17 @@ public class HidingObject : OpenableObject
     protected const float holdThreshold = 2f;
     protected bool isHiden = false;
     private bool hasChangedHidenState = false;
+    protected bool isOpen = false;
 
 
-
-    public override void onMouseDown(EscapeeInteractComponent escapeeInteractComponent)
+    public override void onBeingInteracted(EscapeeInteractComponent escapeeInteractComponent)
     {
         if (escapeeInteractComponent.CanOpen)
         {
             if (needOpen && mouseHoldTime < holdThreshold)
             {
                 isOpen = !isOpen;
-                onOpen?.Invoke();
+                onInteract?.Invoke();
                 Debug.Log(gameObject.name + ", open state: " + isOpen);
             }
             hasChangedHidenState = false;
@@ -35,16 +35,15 @@ public class HidingObject : OpenableObject
             {
                 isHiden = true;
                 Debug.Log("hiding into " + gameObject.name);
-                invokeHiddingEvent();
-                emptyHidingEvnet();
+                onDragBegin?.Invoke();
                 hasChangedHidenState = true;
             }
             else
             {
                 isHiden = false;
                 Debug.Log("comming out from " + gameObject.name);
-                invokeAppearingEvent();
-                emptyAppearingEvent();
+                onDragEnd?.Invoke();
+                emptyDragEvent();
                 hasChangedHidenState = true;
             }
             isOpen = false;
@@ -52,6 +51,8 @@ public class HidingObject : OpenableObject
 
     }
 
-
-
+    public override void onBeingInteracted(MonsterInteractComponent monsterInteractComponent)
+    {
+        throw new System.NotImplementedException();
+    }
 }

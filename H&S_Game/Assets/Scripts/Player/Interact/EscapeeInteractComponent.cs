@@ -1,11 +1,13 @@
 using Photon.Pun;
 using Photon.Realtime;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class EscapeeInteractComponent : InteractComponent
 {
+
     public PlayerMovement playerMovement;
     bool canGrab = true;
     bool canOpen = true;
@@ -13,6 +15,8 @@ public class EscapeeInteractComponent : InteractComponent
     bool canUseGadgets = true;
     bool canTunneling = true;
     bool canCollectGadgets = true;
+    private bool isTransporting = false;
+    private float timeElaspedForTunneling;
 
     public bool CanGrab { get => canGrab; }
     public bool CanOpen { get => canOpen; }
@@ -21,10 +25,54 @@ public class EscapeeInteractComponent : InteractComponent
     public bool CanTunneling { get => canTunneling; }
     public bool CanCollectGadgets { get => canCollectGadgets; }
 
+    private TunnelingObject tunnelingObject;
+
     private void Start()
     {
         if(playerMovement == null) Debug.Assert(playerMovement,"playerMovement not found");
         PhotonNetwork.AddCallbackTarget(this);
+    }
+
+    private new void Update()
+    {
+        base.Update();
+        HandleTransporting();
+    }
+
+    private void HandleTransporting()
+    {
+        if (isTransporting)
+        {
+            // Move the gameObject from input vent to output vent.
+            mainObject.transform.position = Vector2.Lerp(tunnelingObject.input.transform.position, tunnelingObject.output.transform.position, timeElaspedForTunneling / tunnelingObject.transportTime);
+
+            timeElaspedForTunneling += Time.deltaTime;
+            if (timeElaspedForTunneling > tunnelingObject.transportTime)
+            {
+                isTransporting = false;
+
+                // appear
+                visualObject.SetActive(true);
+                movementComponent.enabled = true;
+
+                Transform outputPointObj = tunnelingObject.output.transform.Find("Output Point");
+                if (outputPointObj != null)
+                {
+                    mainObject.transform.position = outputPointObj.position;
+                }
+                else
+                {
+                    Debug.LogError("Output point not found in output vent");
+                }
+
+                // play appear animation
+                // TODO
+
+                Debug.Log("End tunnelling");
+
+
+            }
+        }
     }
 
     private void OnDestroy()
@@ -32,19 +80,17 @@ public class EscapeeInteractComponent : InteractComponent
         PhotonNetwork.RemoveCallbackTarget(this);
     }
 
-
     protected override void OnInteract(GameObject hitObject)
     {
         var interactObj = hitObject.GetComponent<InteractableObject>();
         var gadget = hitObject.GetComponent<GadgetComponent>();
         if (interactObj != null)
         {
-            // Describe how the character behave during the interaction.
-            interactObj.registerHidingEvent(hide);
-            interactObj.registerAppearingEvent(unhide);
-            interactObj.registerTunnelingEvent(tunneling);
 
-            interactObj.onMouseDown(this);
+            // Describe how the character behave during the interaction.
+            registerCallbacksAccordingToTag(interactObj.mainObject.tag, interactObj);
+
+            interactObj.onBeingInteracted(this);
         }
         else if (gadget != null && CanCollectGadgets)
         {
@@ -127,5 +173,52 @@ public class EscapeeInteractComponent : InteractComponent
         }
         Debug.Log("I am saved from being killed");
         visualObject.GetComponent<SpriteRenderer>().sortingOrder = 0;
+    }
+
+    void registerCallbacksAccordingToTag(string tag, InteractableObject interactable)
+    {
+        switch (tag)
+        {
+            case "OpenableObject":
+                interactable.registerInteractEvent(open);
+                break;
+            case "HideableObject":
+                interactable.registerInteractEvent(open);
+                interactable.registerDragEvent(hide,unhide);
+                break;
+            case "TransportPortal":
+                var tunnelingObj = (TunnelingObject)interactable;
+                Action tunnelingCallback = () =>
+                {
+                    tunneling(tunnelingObj);
+                };
+                interactable.registerInteractEvent(tunnelingCallback);
+                break;
+                
+        }
+    }
+
+        /// <summary>
+    /// what the player behave when it's entering a vent.
+    /// </summary>
+    public void tunneling(TunnelingObject tunnelingObject)
+    {
+        Debug.Log("tunneling");
+        this.tunnelingObject = tunnelingObject;
+        // Trigger entering event
+        // TODO
+
+        visualObject.SetActive(false);
+
+        // movement of invisible player object
+        movementComponent = mainObject.GetComponent<PlayerMovement>();
+        if (!movementComponent)
+        {
+            Debug.LogError("Unable to disable movement of the player when tunneling.");
+        }
+        movementComponent.enabled = false;
+        isTransporting = true;
+        timeElaspedForTunneling = 0;
+        // appear after timeElasped has passed the required transporting time. It will be implemented in the Update.
     }
 }

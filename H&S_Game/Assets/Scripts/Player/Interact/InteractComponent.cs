@@ -10,17 +10,12 @@ public abstract class InteractComponent : MonoBehaviour
     public Collider2D interactCollider;
     public GameObject visualObject;
     public GameObject mainObject;
-    public event Action OnTransportEnd;
     protected Animator animator;
-
-    private float timeElaspedForTunneling;
-
 
     private Camera cam;
     private PlayerComponent playerComponent;
-    private PlayerMovement movementComponent;
-    private bool isTransporting = false;
-    private TunnelingObject tunnelingObject;
+    protected PlayerMovement movementComponent;
+
     private PhotonView photonView;
     
 
@@ -36,10 +31,8 @@ public abstract class InteractComponent : MonoBehaviour
         animator = visualObject.GetComponent<Animator>();
     }
 
-    private void Update()
+    protected void Update()
     {
-        HandleTransporting();
-
         Collider2D[] colliders = new Collider2D[10];
         // If the player/monster click down and there is an interactable object within rnage.
         if (photonView.IsMine && Input.GetMouseButtonDown(0) && interactCollider.OverlapPoint(cam.ScreenToWorldPoint(Input.mousePosition)))
@@ -62,6 +55,7 @@ public abstract class InteractComponent : MonoBehaviour
                 var interactObj = rayHit.transform.gameObject.GetComponent<InteractableObject>();
                 if (interactObj != null)
                 {
+                    interactObj.registerDragEvent(hide,unhide);
                     interactObj.onMouseDrag();
                 }
             }
@@ -70,43 +64,11 @@ public abstract class InteractComponent : MonoBehaviour
 
     protected abstract void OnInteract(GameObject hitObject);
 
-    private void HandleTransporting()
+    public void open()
     {
-        if (isTransporting)
-        {
-            // Move the gameObject from input vent to output vent.
-            mainObject.transform.position = Vector2.Lerp(tunnelingObject.input.transform.position, tunnelingObject.output.transform.position, timeElaspedForTunneling / tunnelingObject.transportTime);
 
-            timeElaspedForTunneling += Time.deltaTime;
-            if (timeElaspedForTunneling > tunnelingObject.transportTime)
-            {
-                isTransporting = false;
-
-                // appear
-                visualObject.SetActive(true);
-                movementComponent.enabled = true;
-                
-                Transform outputPointObj = tunnelingObject.output.transform.Find("Output Point");
-                if(outputPointObj != null)
-                {
-                    mainObject.transform.position = outputPointObj.position;
-                }
-                else
-                {
-                    Debug.LogError("Output point not found in output vent");
-                }
-
-                // play appear animation
-                // TODO
-
-                Debug.Log("End tunnelling");
-                var movement = mainObject.GetComponent<PlayerMovement>();
-                OnTransportEnd?.Invoke();
-
-            }
-        }
     }
-
+    
     public void hide()
     {
         visualObject?.SetActive(false);
@@ -143,47 +105,5 @@ public abstract class InteractComponent : MonoBehaviour
         {
             Debug.LogWarning("player object not found!");
         }
-    }
-
-
-    /// <summary>
-    /// what the player behave when it's entering a vent.
-    /// </summary>
-    public void tunneling(TunnelingObject tunnelingObject, bool disableVisual)
-    {
-        Debug.Log("tunneling");
-        movementComponent = mainObject.GetComponent<PlayerMovement>();
-        movementComponent.IsHopping = true;
-        animator.SetBool("IsHopping", true);
-        StartCoroutine("resetBool");
-        
-        // Trigger entering event
-        // TODO
-
-        //// disappear
-        //if (disableVisual)
-        //{
-        //    visualObject.SetActive(false);
-        //}
-
-        //// movement of invisible player object
-        //movementComponent = mainObject.GetComponent<PlayerMovement>();
-        //if (!movementComponent)
-        //{
-        //    Debug.LogError("Unable to disable movement of the player when tunneling.");
-        //}
-        //movementComponent.enabled = false;
-        //isTransporting = true;
-        //this.tunnelingObject = tunnelingObject;
-        //timeElaspedForTunneling = 0;
-
-        //// appear after timeElasped has passed the required transporting time. It will be implemented in the Update.
-
-    }
-
-    IEnumerator resetBool()
-    {
-        yield return new WaitForSeconds(1.0f);
-        animator.SetBool("IsHopping", false);
     }
 }
