@@ -29,6 +29,7 @@ public abstract class InteractComponent : MonoBehaviour
             Debug.Log("PhotonView not found");
         }
         animator = visualObject.GetComponent<Animator>();
+        movementComponent = GetComponentInParent<PlayerMovement>();
     }
 
     protected void Update()

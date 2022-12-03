@@ -3,18 +3,21 @@ using Photon.Realtime;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Http.Headers;
 using UnityEngine;
+using static ClimbingTunnelingObject;
 
 public class EscapeeInteractComponent : InteractComponent
 {
+    public AnimationEventDispatcher animationEventDispatcher;
 
-    public PlayerMovement playerMovement;
     bool canGrab = true;
     bool canOpen = true;
     bool canHide = true;
     bool canUseGadgets = true;
     bool canTunneling = true;
     bool canCollectGadgets = true;
+    bool canHop = true;
     private bool isTransporting = false;
     private float timeElaspedForTunneling;
 
@@ -24,12 +27,16 @@ public class EscapeeInteractComponent : InteractComponent
     public bool CanUseGadgets { get => canUseGadgets; }
     public bool CanTunneling { get => canTunneling; }
     public bool CanCollectGadgets { get => canCollectGadgets; }
+    public bool CanHop { get => canHop; }
+
+
+
 
     private TunnelingObject tunnelingObject;
 
     private void Start()
     {
-        if(playerMovement == null) Debug.Assert(playerMovement,"playerMovement not found");
+        if(movementComponent == null) Debug.Assert(movementComponent,"movementComponent not found");
         PhotonNetwork.AddCallbackTarget(this);
     }
 
@@ -37,6 +44,31 @@ public class EscapeeInteractComponent : InteractComponent
     {
         base.Update();
         HandleTransporting();
+        
+    }
+
+    public void onHoppingEnd(string animationName)
+    {
+
+        // need to reset animator booleans in late update because we must give a chance for animator to update its state in the statemachine.
+        switch (animationName)
+        {
+            case "MediumHoppingMovement":
+                animator.SetBool("isHoppingMedium", false);
+                Debug.Log("onHoppingEnd : " + animationName);
+                mainObject.transform.localScale = Vector3.one;
+                movementComponent.resetHoppingState();
+                animationEventDispatcher.clearAllEvents();
+                break;
+            case "MediumHoppingDownMovement":
+                animator.SetBool("isHoppingDownMedium", false);
+                Debug.Log("onHoppingEnd : " + animationName);
+                mainObject.transform.localScale = Vector3.one;
+                movementComponent.resetHoppingState();
+                animationEventDispatcher.clearAllEvents();
+                break;
+        }
+        
     }
 
     private void HandleTransporting()
@@ -126,11 +158,12 @@ public class EscapeeInteractComponent : InteractComponent
         canHide = false;
     }
 
-    public void onHopping()
+    void onHopping()
     {
         canGrab = false;
         canOpen = false;
         canHide = false;
+        movementComponent.IsHopping = true;
     }
 
     [PunRPC]
@@ -211,7 +244,6 @@ public class EscapeeInteractComponent : InteractComponent
         visualObject.SetActive(false);
 
         // movement of invisible player object
-        movementComponent = mainObject.GetComponent<PlayerMovement>();
         if (!movementComponent)
         {
             Debug.LogError("Unable to disable movement of the player when tunneling.");
@@ -220,5 +252,32 @@ public class EscapeeInteractComponent : InteractComponent
         isTransporting = true;
         timeElaspedForTunneling = 0;
         // appear after timeElasped has passed the required transporting time. It will be implemented in the Update.
+    }
+
+    public void hop(HeightOptions option, FaceDirection direction)
+    {
+        onHopping();
+
+        if (animationEventDispatcher)
+        {
+            animationEventDispatcher.registerAnimationCompleteEvent(onHoppingEnd);
+        }
+
+        if (direction == FaceDirection.left)
+        {
+            mainObject.transform.localScale = new Vector3(-1, 1, 1);
+        }
+
+        switch (option)
+        {
+            case HeightOptions.medium:
+                animator.SetBool("isHoppingMedium",true);
+                movementComponent.setOutOfLevel(true);
+                break;
+            case HeightOptions.downMedium:
+                animator.SetBool("isHoppingDownMedium", true);
+                movementComponent.setOutOfLevel(false);
+                break;
+        }
     }
 }

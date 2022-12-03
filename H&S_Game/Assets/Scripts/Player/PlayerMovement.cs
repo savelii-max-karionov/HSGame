@@ -10,6 +10,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float movementSpeed;
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private static List<float> levels = new List<float> { -3.1f, -2.1f };
+    // If the player hoped to something, this boolean should be set to true.
+    bool isOutOfLevel;
     private Vector2 horizontalMovementVector;
     private float horizontalRawAxis;
     private float verticalRawAxis;
@@ -35,6 +37,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        // Don't want to move when the player is hopping.
         if (IsHopping)
         {
             return;
@@ -53,7 +56,7 @@ public class PlayerMovement : MonoBehaviour
 
         
 
-        if (!isClimbing)
+        if (!isClimbing && !isOutOfLevel)
         {
             verticalMovementVector = getVerticalMoveVec(verticalMovementVector);
         }
@@ -121,36 +124,46 @@ public class PlayerMovement : MonoBehaviour
         StartCoroutine("_hopping", param);
     }
 
-    IEnumerator _hopping(HoppingParams param)
+    public void resetHoppingState()
     {
-        var startPos = param.startPos;
-        var endPosition = param.endPosition;
-        float timer = 0;
-        const float hoppingTime = 1.5f;
-        double[] x = new double[3];
-        double[] y = new double[3];
-        x[0] = 0;
-        y[0] = startPos.y;
-        x[1] = hoppingTime;
-        y[1] = endPosition.y;
-        x[2] = 3f / 4f * hoppingTime;
-        y[2] = 0;
-
-
-        var result = Math.MultiLine(x, y, 3, 2);
-
-        Debug.Log(result);
-        while (timer < hoppingTime)
-        {
-            var newX = Mathf.Lerp(startPos.x, endPosition.x, timer/hoppingTime);
-            var newY = (float)(result[2] + result[1] * timer + result[0] * Mathf.Pow(timer, 2));
-            rb.MovePosition(new Vector2(newX, newY));
-            timer += Time.deltaTime;
-            yield return null;
-        }
-
         IsHopping = false;
     }
+
+    public void setOutOfLevel(bool val)
+    {
+        isOutOfLevel = val;
+    }
+
+    //IEnumerator _hopping(HoppingParams param)
+    //{
+    //    var startPos = param.startPos;
+    //    var endPosition = param.endPosition;
+    //    float timer = 0;
+    //    const float hoppingTime = 1.5f;
+    //    double[] x = new double[3];
+    //    double[] y = new double[3];
+    //    x[0] = 0;
+    //    y[0] = startPos.y;
+    //    x[1] = hoppingTime;
+    //    y[1] = endPosition.y;
+    //    x[2] = 3f / 4f * hoppingTime;
+    //    y[2] = 0;
+
+
+    //    var result = Math.MultiLine(x, y, 3, 2);
+
+    //    Debug.Log(result);
+    //    while (timer < hoppingTime)
+    //    {
+    //        var newX = Mathf.Lerp(startPos.x, endPosition.x, timer/hoppingTime);
+    //        var newY = (float)(result[2] + result[1] * timer + result[0] * Mathf.Pow(timer, 2));
+    //        rb.MovePosition(new Vector2(newX, newY));
+    //        timer += Time.deltaTime;
+    //        yield return null;
+    //    }
+
+    //    IsHopping = false;
+    //}
 
 
 

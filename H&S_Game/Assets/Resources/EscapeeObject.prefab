@@ -68,6 +68,8 @@ GameObject:
   - component: {fileID: 6408186427571396927}
   - component: {fileID: 6408186427571396926}
   - component: {fileID: 6408186427571396924}
+  - component: {fileID: 2272175240709446966}
+  - component: {fileID: 1659465235951941149}
   m_Layer: 2
   m_Name: Visual
   m_TagString: Untagged
@@ -153,12 +155,37 @@ Animator:
   m_Controller: {fileID: 9100000, guid: a4c9beede40d47448bcfc4aa834c0f7b, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &2272175240709446966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6408186427571396921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c74e97bb7fbaa4e4d8108100f2f9236b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1659465235951941149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6408186427571396921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 992573635c5093642bebdce8b969247e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetObject: {fileID: 6408186427961019076}
 --- !u!1 &6408186427961019076
 GameObject:
   m_ObjectHideFlags: 0
@@ -192,7 +219,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6408186427961019076}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.07, y: -2.1, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6408186427571396927}
@@ -335,6 +362,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   visualObject: {fileID: 6408186427571396921}
   itemBarUI: {fileID: 0}
+  walkCollider: {fileID: 4464528958949715789}
 --- !u!114 &4097672337438214864
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -366,7 +394,7 @@ MonoBehaviour:
   interactCollider: {fileID: 3518258438707305186}
   visualObject: {fileID: 6408186427571396921}
   mainObject: {fileID: 6408186427961019076}
-  playerMovement: {fileID: 6408186427961019131}
+  animationEventDispatcher: {fileID: 2272175240709446966}
 --- !u!1 &7949584654672181359
 GameObject:
   m_ObjectHideFlags: 0
